@@ -38,7 +38,7 @@ function App() {
     <ThemeProvider>
       <LanguageProvider>
         <AuthProvider>
-          <Router>
+          <Router basename={import.meta.env.BASE_URL}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
@@ -51,12 +51,14 @@ function App() {
               <Route path="/dashboard" element={<ProtectedRoute><LawyerDashboard /></ProtectedRoute>} />
               <Route path="/dashboard/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
-              {/* ✅ FIX: case-File → case-file (lowercase) aur CaseDiary → CaseFile */}
+              {/* Case files, hearings, and diary */}
               <Route path="/dashboard/case-file" element={<ProtectedRoute><CaseFile /></ProtectedRoute>} />
+              <Route path="/dashboard/cases" element={<ProtectedRoute><CaseFile /></ProtectedRoute>} />
               <Route path="/dashboard/today-hearings" element={<ProtectedRoute><CaseFile /></ProtectedRoute>} />
               <Route path="/dashboard/cause-list" element={<ProtectedRoute><CaseFile /></ProtectedRoute>} />
               <Route path="/dashboard/case-diary" element={<ProtectedRoute><CaseDiary /></ProtectedRoute>} />
               <Route path="/dashboard/case-file/:id" element={<ProtectedRoute><CaseFileDetails /></ProtectedRoute>} />
+              <Route path="/dashboard/library" element={<ProtectedRoute><Library /></ProtectedRoute>} />
               <Route path="/dashboard/Library" element={<ProtectedRoute><Library /></ProtectedRoute>} />
               <Route path="/dashboard/add-case" element={<ProtectedRoute><AddCase /></ProtectedRoute>} />
               <Route path="/dashboard/petition-court/:id" element={<PetitionCourt />} />
@@ -64,6 +66,8 @@ function App() {
               <Route path="/dashboard/criminal-appeal/:id" element={<CriminalAppeal />} />
               <Route path="/team/:id" element={<LawyerProfile />} />
               <Route path="/dashboard/reminders" element={<Reminders />} />
+              <Route path="/dashboard/settings" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Router>
         </AuthProvider>
