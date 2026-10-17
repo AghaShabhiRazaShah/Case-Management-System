@@ -35,13 +35,13 @@ const Navbar = () => {
           <Link to="/" className="flex items-center gap-3 flex-shrink-0">
             <img src={logo} alt="LMS Logo" className="h-12 w-12 border-2 border-primary-600 dark:border-accent-400 rounded-full shadow-md" />
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-primary-800 dark:text-white">{t('CASE MANAGEMENT SYSTEM')}</h1>
-              <p className="text-xs text-gray-600 dark:text-gray-400 font-medium tracking-wide">MEER AHMED MANGRIO & ASSOCIATES</p>
+              <h1 className="text-xl font-bold text-primary-800 dark:text-white">{t('heroTitle')}</h1>
+              <p className="text-xs text-gray-600 dark:text-gray-400 font-medium tracking-wide">Mangrio Meer Law </p>
             </div>
           </Link>
 
           {/* Desktop Menu - CENTER */}
-          <div className="hidden xl:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
               <NavLink key={link.path} to={link.path} className={({ isActive }) =>
                 `px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
@@ -57,8 +57,8 @@ const Navbar = () => {
           <div className="hidden xl:flex items-center gap-3">
             <select value={currentLang} onChange={(e) => changeLanguage(e.target.value)} className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm cursor-pointer focus:ring-2 focus:ring-primary-500">
               <option value="en">🇬🇧 English</option>
-              <option value="ur">🇵 اردو</option>
-              <option value="ar">🇸 العربية</option>
+              <option value="ur">🇰 اردو</option>
+              <option value="ar">🇸🇦 العربية</option>
             </select>
 
             <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-yellow-400 hover:scale-110 transition-transform">
@@ -72,7 +72,7 @@ const Navbar = () => {
                 </button>
               </div>
             ) : (
-              <Link to="/login" className="px-6 py-2 bg-primary-700 hover:bg-primary-800 text-white rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md">
+              <Link to="/login" className="px-5 py-2 bg-primary-700 hover:bg-primary-800 text-white rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md whitespace-nowrap text-sm">
                 Lawyer Login
               </Link>
             )}

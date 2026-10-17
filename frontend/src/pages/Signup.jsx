@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { signup } = useAuth();
+  const { signup, login } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -45,10 +45,19 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      signup(formData);
-      navigate('/dashboard');
+      const result = signup(formData);
+      if (result.success) {
+        const loginResult = login(formData.email, formData.password);
+        if (loginResult.success) {
+          navigate('/dashboard');
+        } else {
+          setError(loginResult.message || 'Account created, but automatic login failed');
+        }
+      } else {
+        setError(result.message || 'Signup failed');
+      }
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'An error occurred during signup');
     } finally {
       setLoading(false);
     }
@@ -69,11 +78,6 @@ const Signup = () => {
 
         {/* Form */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
-          {error && (
-            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Name */}
@@ -152,6 +156,12 @@ const Signup = () => {
               {loading ? 'Creating Account...' : 'Sign Up'}
             </button>
           </form>
+
+          {error && (
+            <p className="mt-4 text-red-500 text-sm text-center font-medium">
+              {error}
+            </p>
+          )}
 
           {/* Login Link */}
           <div className="mt-6 text-center">

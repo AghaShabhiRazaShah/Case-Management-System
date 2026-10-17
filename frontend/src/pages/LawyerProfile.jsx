@@ -1,3 +1,4 @@
+import { useEffect } from 'react'; // ✅ 1. useEffect import kiya gaya
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaPhone, FaArrowLeft, FaMapMarkerAlt, FaBriefcase, FaGraduationCap } from 'react-icons/fa';
 import Navbar from '../components/Navbar';
@@ -18,11 +19,16 @@ import iqraImg from '../assets/team/iqra.jpg';
 import akramImg from '../assets/team/akram.jpg'; 
 import arImg from '../assets/team/ar.jpg'; 
 import nabibuxImg from '../assets/team/nabibux.jpg';
-
+import rasheedImg from '../assets/team/rasheed.jpg';
 
 const LawyerProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  // ✅ 2. YE LINE ADD KI GAYI HAI: Jab bhi page load hoga ya ID change hogi, scroll top par chala jayega
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
 
   // ✅ All 16 Lawyers Data with proper image imports (UNCHANGED)
   const lawyers = [
@@ -207,7 +213,7 @@ const LawyerProfile = () => {
       title: 'Advocate',
       phone: '0346-0257121',
       email: '......',
-      image: null, // No image available
+      image: rasheedImg, // No image available
       bio: 'Advocate providing legal consultation.',
       experience: '......',
       specialization: 'General Practice',

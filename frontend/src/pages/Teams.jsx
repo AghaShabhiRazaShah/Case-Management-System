@@ -20,6 +20,7 @@ import iqraImg from '../assets/team/iqra.jpg';
 import akramImg from '../assets/team/akram.jpg'; 
 import arImg from '../assets/team/ar.jpg'; 
 import nabibuxImg from '../assets/team/nabibux.jpg';
+import rasheedImg from '../assets/team/rasheed.jpg';
 
 const Teams = () => {
   const { t } = useLanguage();
@@ -48,7 +49,7 @@ const Teams = () => {
     { id: 11, name: 'Abid Ali Jhatial', title: 'Adv High Court of Sindh', cell: '0300-7007910', specialization: 'Legal Services', image: null, objectPos: 'center 20%', hasProfile: false },
     { id: 12, name: 'Aftab Ahmed Jatoi', title: 'Advocate', cell: '0303-7668823', specialization: 'Legal Services', image: aftabImg, objectPos: 'center 20%', hasProfile: true },
     { id: 13, name: 'Adil Hussain Jatoi', title: 'Advocate', cell: '0327-8316476', specialization: 'Legal Services', image: aadilImg, objectPos: 'center 25%', hasProfile: true },
-    { id: 14, name: 'Abdul Rasheed Saand', title: 'Advocate', cell: '0346-0257121', specialization: 'Legal Services', image: null, objectPos: 'center 20%', hasProfile: false },
+    { id: 14, name: 'Abdul Rasheed Saand', title: 'Advocate', cell: '0346-0257121', specialization: 'Legal Services', image: rasheedImg, objectPos: 'center 20%', hasProfile: true },
     { id: 15, name: 'Duaa Tahir', title: 'Advocate', cell: '0303 3383767', specialization: 'Civil, Criminal, Family Law', image: duaImg, objectPos: 'center 25%', hasProfile: true },
     { id: 16, name: 'Iqra Mustafa Bareejo', title: 'Advocate', cell: '+92 301 5529993', specialization: 'Civil, Criminal, and Family Litigation', image: iqraImg, objectPos: 'center 20%', hasProfile: true },
   ];

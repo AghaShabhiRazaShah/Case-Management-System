@@ -19,9 +19,9 @@ const Profile = () => {
 
   // Profile Data State
   const [profile, setProfile] = useState({
-    name: user?.name || 'Advocate Naseer Ahmed',
+    name: user?.name || 'Adv Shabhi Raza',
     email: user?.email || 'abc@gmail.com',
-    phone: '+92 300 1234567',
+    phone: '03170349885',
     location: 'Karachi, Pakistan',
     profilePhoto: null,
     licenseNumber: 'BA-2015-12345',

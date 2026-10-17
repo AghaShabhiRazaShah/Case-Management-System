@@ -23,10 +23,14 @@ const Login = () => {
     setLoading(true);
 
     try {
-      login(formData.email, formData.password);
-      navigate('/dashboard');
+      const result = login(formData.email, formData.password);
+      if (result.success) {
+        navigate('/dashboard');
+      } else {
+        setError(result.message || 'Invalid email or password');
+      }
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'An error occurred during login');
     } finally {
       setLoading(false);
     }
@@ -47,12 +51,6 @@ const Login = () => {
 
         {/* Form */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
-          {error && (
-            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
-
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email */}
             <div>
@@ -105,6 +103,12 @@ const Login = () => {
               {loading ? 'Logging in...' : 'Login'}
             </button>
           </form>
+
+          {error && (
+            <p className="mt-4 text-red-500 text-sm text-center font-medium">
+              {error}
+            </p>
+          )}
 
           {/* Signup Link */}
           <div className="mt-6 text-center">

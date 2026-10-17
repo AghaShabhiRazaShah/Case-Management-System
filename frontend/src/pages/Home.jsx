@@ -98,7 +98,8 @@ const Home = () => {
           <div className="absolute top-0 right-0 w-1/2 h-full bg-accent-500/10 rounded-l-full blur-3xl"></div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid lg:grid-cols-2 gap-8 items-center">
             <div>
-              <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-2">
+              {/* ✅ YAHAN CHANGE KIYA GAYA HAI: whitespace-pre-line add kiya gaya hai */}
+              <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-2 whitespace-pre-line">
                 {t('heroTitle')}
               </h1>
               <h2 className="font-serif text-xl md:text-3xl font-bold text-accent-400 mb-2">
@@ -112,7 +113,7 @@ const Home = () => {
                 <Link to="/login" className="px-6 py-3 bg-accent-500 hover:bg-accent-600 text-gray-900 font-bold rounded-lg shadow-lg hover:shadow-accent-500/50 transition-all flex items-center justify-center gap-2 text-sm">
                   {t('bookAppointment')} <FaCalendarAlt />
                 </Link>
-                <Link to="/lawyers" className="px-6 py-3 bg-white/10 backdrop-blur-md border border-white/30 text-white font-bold rounded-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2 text-sm">
+                <Link to="/teams" className="px-6 py-3 bg-white/10 backdrop-blur-md border border-white/30 text-white font-bold rounded-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2 text-sm">
                   {t('meetOurLawyers')} <FaUserTie />
                 </Link>
               </div>
@@ -169,43 +170,6 @@ const Home = () => {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* 4. OUR LAWYERS - Compact */}
-        <section className="py-12 bg-gray-50 dark:bg-gray-800">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary-800 dark:text-white mb-3">{t('ourLawyers')}</h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8 text-sm">{t('lawyersDesc')}</p>
-            
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 mb-8">
-              {lawyers.map((lawyer, idx) => (
-                <div key={idx} className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700 group hover:-translate-y-1">
-                  <div className="h-28 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/30 dark:to-primary-800/30 flex items-center justify-center overflow-hidden">
-                    <img src={lawyer.img} alt={lawyer.name} className="w-16 h-16 rounded-full object-cover border-2 border-white dark:border-gray-700 shadow-md group-hover:scale-105 transition-transform" />
-                  </div>
-                  
-                  <div className="p-3 text-center">
-                    <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-0.5 leading-tight line-clamp-2">
-                      {lawyer.name}
-                    </h3>
-                    <p className="text-primary-600 dark:text-accent-400 font-medium text-xs mb-0.5">
-                      {lawyer.role}
-                    </p>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400 mb-2">
-                      {lawyer.exp}
-                    </p>
-                    <Link to="/teams" className="inline-block px-3 py-1 border border-primary-600 text-primary-600 dark:text-accent-400 dark:border-accent-400 rounded-full text-[10px] font-semibold hover:bg-primary-600 hover:text-white dark:hover:bg-accent-400 dark:hover:text-gray-900 transition-all">
-                      {t('viewProfile')}
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            <Link to="/teams" className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary-700 text-white rounded-lg font-semibold hover:bg-primary-800 transition-all text-sm">
-              {t('viewAllLawyers')} <FaArrowRight />
-            </Link>
           </div>
         </section>
 
