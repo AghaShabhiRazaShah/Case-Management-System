@@ -40,7 +40,7 @@ const Navbar = () => {
                 M/S Meer Ahmed Mangrio & Associates
               </h1>
               <p className="text-[10px] md:text-xs text-gray-600 dark:text-gray-400 font-medium tracking-wide">
-                Mangrio & Associates
+                PREMIER LAW FIRM | HYDERABAD, SINDH
               </p>
             </div>
           </Link>
