@@ -21,17 +21,21 @@ import akramImg from '../assets/team/akram.jpg';
 import arImg from '../assets/team/ar.jpg'; 
 import nabibuxImg from '../assets/team/nabibux.jpg';
 import rasheedImg from '../assets/team/rasheed.jpg';
+import abidImg from '../assets/team/abid.jpg';
+import arslanImg from '../assets/team/arslan.jpg';
 
 const Teams = () => {
   const { t } = useLanguage();
 
-  // Founder Data
+  // ✅ Founder Data (Added id and hasProfile)
   const founder = {
+    id: 'founder',
     name: 'Meer Ahmed Mangrio',
     title: 'Advocate Supreme Court',
-    cell: '0301-3504227',
-    specialization: 'Founder of the firm',
-    image: founderImg
+    cell: '03352506772',
+    specialization: 'Founder & Senior Partner',
+    image: founderImg,
+    hasProfile: true
   };
 
   // Team Members Data
@@ -46,12 +50,13 @@ const Teams = () => {
     { id: 8, name: 'Allah Rakhio @ AR Rahujo', title: 'Adv High Court of Sindh', cell: '0346-8796336', specialization: 'Legal Services', image: arImg, objectPos: 'center 20%', hasProfile: true },
     { id: 9, name: 'Muhammad Achar Jalbani', title: 'Adv High Court of Sindh', cell: '03258381548', specialization: 'Civil & Criminal Litigation', image: acharImg, objectPos: 'center 20%', hasProfile: true },
     { id: 10, name: 'Pirbhat Chandio', title: 'Advocate', cell: '0330-8138040', specialization: 'Legal Services', image: pirbhatImg, objectPos: 'center 25%', hasProfile: true },
-    { id: 11, name: 'Abid Ali Jhatial', title: 'Adv High Court of Sindh', cell: '0300-7007910', specialization: 'Legal Services', image: null, objectPos: 'center 20%', hasProfile: false },
+    { id: 11, name: 'Abid Ali Jhatial', title: 'Adv High Court of Sindh', cell: '0300-7007910', specialization: 'Legal Services', image: abidImg, objectPos: 'center 20%', hasProfile: true },
     { id: 12, name: 'Aftab Ahmed Jatoi', title: 'Advocate', cell: '0303-7668823', specialization: 'Legal Services', image: aftabImg, objectPos: 'center 20%', hasProfile: true },
     { id: 13, name: 'Adil Hussain Jatoi', title: 'Advocate', cell: '0327-8316476', specialization: 'Legal Services', image: aadilImg, objectPos: 'center 25%', hasProfile: true },
     { id: 14, name: 'Abdul Rasheed Saand', title: 'Advocate', cell: '0346-0257121', specialization: 'Legal Services', image: rasheedImg, objectPos: 'center 20%', hasProfile: true },
     { id: 15, name: 'Duaa Tahir', title: 'Advocate', cell: '0303 3383767', specialization: 'Civil, Criminal, Family Law', image: duaImg, objectPos: 'center 25%', hasProfile: true },
     { id: 16, name: 'Iqra Mustafa Bareejo', title: 'Advocate', cell: '+92 301 5529993', specialization: 'Civil, Criminal, and Family Litigation', image: iqraImg, objectPos: 'center 20%', hasProfile: true },
+    { id: 17, name: 'Arslan Ahmed Soomro', title: 'Advocate / Legal Consultant', cell: '0333-7373754', specialization: 'Civil & Criminal Litigation, Corporate & Constitutional Law', image: arslanImg, objectPos: 'center 20%', hasProfile: true },
   ];
 
   return (
@@ -70,12 +75,12 @@ const Teams = () => {
           </div>
         </section>
 
-        {/* Founder Section - Compact */}
+        {/* ✅ Founder Section - Updated with View Button on Right */}
         <section className="py-10 bg-gray-50 dark:bg-gray-800">
           <div className="max-w-4xl mx-auto px-4">
             <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 border-t-4 border-accent-500">
               
-              {/* Founder Image - Compact */}
+              {/* Founder Image */}
               <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-accent-400 shadow-lg flex-shrink-0 bg-gray-200">
                 <img 
                   src={founder.image} 
@@ -95,28 +100,36 @@ const Teams = () => {
                 <p className="text-primary-600 dark:text-accent-400 font-medium text-base md:text-lg mb-3">
                   {founder.title}
                 </p>
-                <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center md:justify-start gap-2 text-sm">
+                <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center md:justify-start gap-2 text-sm mb-4">
                   <FaPhone className="text-accent-500" /> {founder.cell}
                 </p>
+                
+                {/* ✅ View Full Profile Button (Right Side Aligned on Desktop) */}
+                <div className="flex justify-center md:justify-start">
+                  <Link 
+                    to={`/team/${founder.id}`}
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-bold rounded-lg transition-all shadow-md hover:shadow-lg w-full md:w-auto"
+                  >
+                    <FaEye /> View Full Profile
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Team Members Grid - Compact & Professional */}
+        {/* Team Members Grid */}
         <section className="py-10 bg-white dark:bg-gray-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-center text-primary-900 dark:text-white mb-8">
               Our Legal Team
             </h2>
             
-            {/* Added xl:grid-cols-4 for better fit on large screens, reduced gap and padding */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {teamMembers.map((member) => (
                 <div key={member.id} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 shadow-sm hover:shadow-md transition-all border border-gray-100 dark:border-gray-700 hover:-translate-y-1 relative">
-                  
                   <div className="flex items-start gap-3">
-                    {/* Professional Circular Image - Compact */}
+                    {/* Professional Circular Image */}
                     <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-accent-400 flex-shrink-0 bg-gray-200 shadow-sm">
                       {member.image ? (
                         <img 
@@ -132,7 +145,7 @@ const Teams = () => {
                       )}
                     </div>
 
-                    {/* Member Info - Compact */}
+                    {/* Member Info */}
                     <div className="flex-grow min-w-0">
                       <h3 className="text-sm font-bold text-gray-900 dark:text-white leading-tight mb-0.5 truncate">
                         {member.name}
@@ -144,7 +157,7 @@ const Teams = () => {
                         <FaPhone className="text-accent-500 text-[8px]" /> {member.cell}
                       </p>
                       
-                      {/* View Profile Button - Compact */}
+                      {/* View Profile Button */}
                       {member.hasProfile ? (
                         <Link 
                           to={`/team/${member.id}`}

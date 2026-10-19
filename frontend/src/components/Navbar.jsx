@@ -8,7 +8,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 
-import logo from '../assets/logo.png';
+import logo from "../assets/logo.jpg";
 
 const Navbar = () => {
   const { darkMode, setDarkMode } = useTheme();
@@ -28,15 +28,20 @@ const Navbar = () => {
 
   return (
     <nav className="fixed w-full z-40 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-700">
-      <div className="max-w-full mx-auto px-6 lg:px-8">
+      {/* Changed max-w-full to max-w-7xl for better centering and space management */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           
-          {/* LOGO + TEXT SECTION */}
-          <Link to="/" className="flex items-center gap-3 flex-shrink-0">
-            <img src={logo} alt="LMS Logo" className="h-12 w-12 border-2 border-primary-600 dark:border-accent-400 rounded-full shadow-md" />
-            <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-primary-800 dark:text-white">{t('heroTitle')}</h1>
-              <p className="text-xs text-gray-600 dark:text-gray-400 font-medium tracking-wide">Mangrio Meer Law </p>
+          {/* LOGO + TEXT SECTION - COMPACTED TO PREVENT OVERLAP */}
+          <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+            <img src={logo} alt="LMS Logo" className="h-10 w-10 border-2 border-primary-600 dark:border-accent-400 rounded-full shadow-md" />
+            <div className="hidden md:block leading-tight">
+              <h1 className="text-sm md:text-base font-bold text-primary-800 dark:text-white">
+                M/S Meer Ahmed Mangrio & Associates
+              </h1>
+              <p className="text-[10px] md:text-xs text-gray-600 dark:text-gray-400 font-medium tracking-wide">
+                Mangrio & Associates
+              </p>
             </div>
           </Link>
 
@@ -53,26 +58,30 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Right Side - Language + Dark Mode + Auth */}
+          {/* Right Side - Language + Dark Mode + Auth (Compact) */}
           <div className="hidden xl:flex items-center gap-3">
-            <select value={currentLang} onChange={(e) => changeLanguage(e.target.value)} className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm cursor-pointer focus:ring-2 focus:ring-primary-500">
-              <option value="en">🇬🇧 English</option>
-              <option value="ur">🇰 اردو</option>
-              <option value="ar">🇸🇦 العربية</option>
+            <select 
+              value={currentLang} 
+              onChange={(e) => changeLanguage(e.target.value)} 
+              className="px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-xs cursor-pointer focus:ring-2 focus:ring-primary-500"
+            >
+              <option value="en">🇬🇧 EN</option>
+              <option value="ur">🇵🇰 UR</option>
+              <option value="ar">🇸🇦 AR</option>
             </select>
 
-            <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-yellow-400 hover:scale-110 transition-transform">
-              {darkMode ? <FaSun size={18} /> : <FaMoon size={18} />}
+            <button onClick={() => setDarkMode(!darkMode)} className="p-1.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-yellow-400 hover:scale-110 transition-transform">
+              {darkMode ? <FaSun size={16} /> : <FaMoon size={16} />}
             </button>
 
             {user ? (
               <div className="flex items-center gap-3">
-                <button onClick={logout} className="flex items-center gap-2 px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md">
-                  <FaSignOutAlt /> Logout
+                <button onClick={logout} className="flex items-center gap-2 px-4 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md text-sm">
+                  <FaSignOutAlt size={14} /> Logout
                 </button>
               </div>
             ) : (
-              <Link to="/login" className="px-5 py-2 bg-primary-700 hover:bg-primary-800 text-white rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md whitespace-nowrap text-sm">
+              <Link to="/login" className="px-4 py-1.5 bg-primary-700 hover:bg-primary-800 text-white rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md whitespace-nowrap text-sm">
                 Lawyer Login
               </Link>
             )}
@@ -81,10 +90,10 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <div className="xl:hidden flex items-center gap-2">
             <button onClick={() => setDarkMode(!darkMode)} className="p-2 text-gray-600 dark:text-yellow-400">
-              {darkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
+              {darkMode ? <FaSun size={18} /> : <FaMoon size={18} />}
             </button>
             <button onClick={() => setIsOpen(!isOpen)} className="text-gray-700 dark:text-gray-300 p-2">
-              {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+              {isOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
             </button>
           </div>
         </div>

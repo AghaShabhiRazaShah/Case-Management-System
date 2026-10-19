@@ -23,7 +23,7 @@ export const LanguageProvider = ({ children }) => {
       newCaseFile: 'New Case File', activeFilters: 'Active Filters', type: 'Type', noHearingsFound: 'No hearings found matching your filters.', clearAllFilters: 'Clear all filters',
       calendarView: 'Calendar View', comingSoon: 'Interactive calendar coming soon...',
       // Home Page
-      heroTitle: 'Case Management\nSystem', heroSubtitle: 'MEER AHMED MANGRIO & ASSOCIATES', heroDesc:  'Advocate Supreme Court',
+      heroTitle: 'M/S Meer Ahmed Mangrio\n Associates', heroSubtitle: 'MEER AHMED MANGRIO & ASSOCIATES', heroDesc:  'Advocate Supreme Court',
       bookAppointment: 'Book Appointment', meetOurLawyers: 'Meet Our Lawyers', aboutOurFirm: 'About Our Firm', learnMore: 'Learn More About Us',
       ourLegalServices: 'Our Legal Services', servicesDesc: 'Comprehensive legal solutions tailored to protect your rights and interests.',
       ourLawyers: 'Meet Our Expert Lawyers', lawyersDesc: 'Dedicated professionals ready to fight for your justice.', viewProfile: 'View Profile', viewAllLawyers: 'View All Lawyers',
@@ -117,7 +117,7 @@ export const LanguageProvider = ({ children }) => {
       newCaseFile: 'نیا کیس فائل', activeFilters: 'فعال فلٹرز', type: 'قسم', noHearingsFound: 'آپ کے فلٹرز سے ملتی جلتی کوئی سماعت نہیں ملی۔', clearAllFilters: 'تمام فلٹرز صاف کریں',
       calendarView: 'کیلنڈر ویو', comingSoon: 'انٹرایکٹو کیلنڈر جلد آرہا ہے...',
       // Home Page
-      heroTitle:'کیس مینجمنٹ\nسسٹم', heroSubtitle: 'جن پر آپ بھروسہ کر سکتے ہیں', heroDesc: 'ماہر قانونی رہنمائی، شفاف کیس ٹریکنگ، اور آپ کے تمام قانونی معاملات کے لیے وقف نمائندگی کے ساتھ آپ کو بااختیار بنانا۔',
+      heroTitle:'ایم/ایس میر احمد منگریو \nاینڈ ایسوسی ایٹس', heroSubtitle: 'جن پر آپ بھروسہ کر سکتے ہیں', heroDesc: 'ماہر قانونی رہنمائی، شفاف کیس ٹریکنگ، اور آپ کے تمام قانونی معاملات کے لیے وقف نمائندگی کے ساتھ آپ کو بااختیار بنانا۔',
       bookAppointment: 'اپوائنٹمنٹ بک کریں', meetOurLawyers: 'ہمارے وکلاء سے ملیں', aboutOurFirm: 'ہمارے فرم کے بارے میں', learnMore: 'ہمارے بارے میں مزید جانیں',
       ourLegalServices: 'ہماری قانونی خدمات', servicesDesc: 'آپ کے حقوق اور مفادات کے تحفظ کے لیے جامع قانونی حل۔',
       ourLawyers: 'ہمارے ماہر وکلاء سے ملیں', lawyersDesc: 'آپ کے انصاف کے لیے لڑنے کے لیے تیار وقف پیشہ ور افراد۔', viewProfile: 'پروفائل دیکھیں', viewAllLawyers: 'تمام وکلاء دیکھیں',

@@ -119,14 +119,6 @@ const Login = () => {
               </Link>
             </p>
           </div>
-
-          {/* Test Credentials Hint */}
-          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg text-center">
-            <p className="text-xs text-blue-800 dark:text-blue-200 font-medium">
-              Test Credentials: <br />
-              Email: test@lms.com | Password: 123456
-            </p>
-          </div>
         </div>
       </div>
     </div>

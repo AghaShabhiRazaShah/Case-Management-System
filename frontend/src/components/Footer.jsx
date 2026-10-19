@@ -13,7 +13,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <FaBalanceScale className="text-3xl text-accent-400" />
-              <h3 className="text-xl font-bold font-serif text-white">Lawyers Management System</h3>
+              <h3 className="text-xl font-bold font-serif text-white">M/S Meer Ahmed Mangrio & Associates</h3>
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
               Empowering you with expert legal guidance, transparent case tracking, and dedicated representation for all your legal matters.
@@ -46,7 +46,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-2">
                 <FaEnvelope className="text-accent-400 flex-shrink-0" />
-                <span>contact@meerahmedmangrio.com</span>
+                <span>mangriomeer@gmail.com</span>
               </li>
             </ul>
           </div>
@@ -56,8 +56,8 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center text-center md:text-left text-sm text-gray-400">
           
           <p>
-            © {new Date().getFullYear()} <span className="text-accent-400 font-semibold">Lawyers Management System</span>. 
-            All rights reserved in FYCP/2K26/092.
+            © {new Date().getFullYear()} <span className="text-accent-400 font-semibold">M/S Meer Ahmed Mangrio & Associates</span>. 
+            All rights reserved.
           </p>
 
           {/* Social Icons */}
