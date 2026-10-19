@@ -13,7 +13,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <FaBalanceScale className="text-3xl text-accent-400" />
-              <h3 className="text-xl font-bold font-serif text-white">M/S Meer Ahmed Mangrio & Associates</h3>
+              <h3 className="text-xl font-bold font-serif text-white">M/s Meer Ahmed Mangrio & Associates</h3>
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
               Empowering you with expert legal guidance, transparent case tracking, and dedicated representation for all your legal matters.
@@ -56,7 +56,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center text-center md:text-left text-sm text-gray-400">
           
           <p>
-            © {new Date().getFullYear()} <span className="text-accent-400 font-semibold">M/S Meer Ahmed Mangrio & Associates</span>. 
+            © {new Date().getFullYear()} <span className="text-accent-400 font-semibold">M/s Meer Ahmed Mangrio & Associates</span>. 
             All rights reserved.
           </p>
 

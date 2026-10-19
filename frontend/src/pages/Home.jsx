@@ -28,17 +28,17 @@ const Home = () => {
       icon: FaLandmark,
       color: 'bg-yellow-500'
     },
+     {
+      title: 'Civil Law',
+      desc: 'We provide professional legal assistance in civil disputes and litigation including contracts, property, and torts.',
+      icon: FaBalanceScale,
+      color: 'bg-blue-500'
+    },
     {
       title: 'Family Law',
       desc: 'Compassionate handling of sensitive family matters including divorce, custody, inheritance, and maintenance.',
       icon: FaUsers,
       color: 'bg-purple-500'
-    },
-    {
-      title: 'Civil Law',
-      desc: 'We provide professional legal assistance in civil disputes and litigation including contracts, property, and torts.',
-      icon: FaBalanceScale,
-      color: 'bg-blue-500'
     },
     {
       title: 'Rent Law',

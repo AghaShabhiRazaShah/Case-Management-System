@@ -23,7 +23,7 @@ export const LanguageProvider = ({ children }) => {
       newCaseFile: 'New Case File', activeFilters: 'Active Filters', type: 'Type', noHearingsFound: 'No hearings found matching your filters.', clearAllFilters: 'Clear all filters',
       calendarView: 'Calendar View', comingSoon: 'Interactive calendar coming soon...',
       // Home Page
-      heroTitle: 'M/S Meer Ahmed Mangrio\n Associates', heroSubtitle: 'MEER AHMED MANGRIO & ASSOCIATES', heroDesc:  'Advocate Supreme Court',
+      heroTitle: 'M/s Meer Ahmed Mangrio & Associates', heroSubtitle: 'MEER AHMED MANGRIO & ASSOCIATES', heroDesc:  'Advocate Supreme Court',
       bookAppointment: 'Book Appointment', meetOurLawyers: 'Meet Our Lawyers', aboutOurFirm: 'About Our Firm', learnMore: 'Learn More About Us',
       ourLegalServices: 'Our Legal Services', servicesDesc: 'Comprehensive legal solutions tailored to protect your rights and interests.',
       ourLawyers: 'Meet Our Expert Lawyers', lawyersDesc: 'Dedicated professionals ready to fight for your justice.', viewProfile: 'View Profile', viewAllLawyers: 'View All Lawyers',

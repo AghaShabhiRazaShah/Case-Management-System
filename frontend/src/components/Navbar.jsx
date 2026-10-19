@@ -37,7 +37,7 @@ const Navbar = () => {
             <img src={logo} alt="LMS Logo" className="h-10 w-10 border-2 border-primary-600 dark:border-accent-400 rounded-full shadow-md" />
             <div className="hidden md:block leading-tight">
               <h1 className="text-sm md:text-base font-bold text-primary-800 dark:text-white">
-                M/S Meer Ahmed Mangrio & Associates
+                M/s Meer Ahmed Mangrio & Associates
               </h1>
               <p className="text-[10px] md:text-xs text-gray-600 dark:text-gray-400 font-medium tracking-wide">
                 PREMIER LAW FIRM | HYDERABAD, SINDH
