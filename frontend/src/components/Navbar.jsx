@@ -28,18 +28,20 @@ const Navbar = () => {
 
   return (
     <nav className="fixed w-full z-40 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-700">
-      {/* Changed max-w-full to max-w-7xl for better centering and space management */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           
-          {/* LOGO + TEXT SECTION - COMPACTED TO PREVENT OVERLAP */}
+          {/* LOGO + TEXT SECTION */}
           <Link to="/" className="flex items-center gap-2 flex-shrink-0">
             <img src={logo} alt="LMS Logo" className="h-10 w-10 border-2 border-primary-600 dark:border-accent-400 rounded-full shadow-md" />
-            <div className="hidden md:block leading-tight">
-              <h1 className="text-sm md:text-base font-bold text-primary-800 dark:text-white">
+            
+            {/* ✅ Sirf yahan change kiya: 'hidden md:block' ki jagah 'block' kar diya */}
+            <div className="block leading-tight">
+              {/* ✅ Mobile par chota font, desktop par wahi purana font */}
+              <h1 className="text-xs md:text-sm lg:text-base font-bold text-primary-800 dark:text-white">
                 M/s Meer Ahmed Mangrio & Associates
               </h1>
-              <p className="text-[10px] md:text-xs text-gray-600 dark:text-gray-400 font-medium tracking-wide">
+              <p className="text-[8px] md:text-[10px] lg:text-xs text-gray-600 dark:text-gray-400 font-medium tracking-wide">
                 PREMIER LAW FIRM | HYDERABAD, SINDH
               </p>
             </div>

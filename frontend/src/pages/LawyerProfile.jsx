@@ -274,7 +274,7 @@ A former Inspector in the Federal Board of Revenue (FBR), Mr. Kumar resigned fro
     },
     {
       id: 16,
-      name: 'Iqra Mustafa Bareejo',
+      name: 'Iqra Mustafa ',
       designation: 'Advocate',
       title: 'Advocate',
       phone: '+92 301 5529993',

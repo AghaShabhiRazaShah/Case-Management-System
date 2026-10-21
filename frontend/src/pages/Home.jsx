@@ -233,11 +233,15 @@ const Home = () => {
           </div>
         </section>
 
-        {/* 8. CONTACT / OFFICE LOCATION - Compact */}
+                {/* 8. CONTACT / OFFICE LOCATION - Compact */}
         <section className="py-12 bg-white dark:bg-gray-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary-800 dark:text-white mb-8 text-center">{t('contactLocation')}</h2>
+            <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary-800 dark:text-white mb-8 text-center">
+              {t('contactLocation')}
+            </h2>
+            
             <div className="grid lg:grid-cols-2 gap-8">
+              {/* Left Side: Contact Info */}
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -248,6 +252,7 @@ const Home = () => {
                     <p className="text-gray-600 dark:text-gray-400 text-sm">Office No. 3 Behind DIALDAS Club, Near High Court of Sindh, Hyderabad</p>
                   </div>
                 </div>
+                
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
                     <FaPhone className="text-primary-700 dark:text-accent-400 text-base" />
@@ -257,6 +262,7 @@ const Home = () => {
                     <p className="text-gray-600 dark:text-gray-400 text-sm">0301-3504227</p>
                   </div>
                 </div>
+                
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
                     <FaEnvelope className="text-primary-700 dark:text-accent-400 text-base" />
@@ -266,6 +272,7 @@ const Home = () => {
                     <p className="text-gray-600 dark:text-gray-400 text-sm">contact@meerahmedmangrio.com</p>
                   </div>
                 </div>
+                
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
                     <FaClock className="text-primary-700 dark:text-accent-400 text-base" />
@@ -275,17 +282,23 @@ const Home = () => {
                     <p className="text-gray-600 dark:text-gray-400 text-sm">Mon - Sat: 9:00 AM - 6:00 PM<br />Sunday: Closed</p>
                   </div>
                 </div>
+                
                 <Link to="/contact" className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-700 text-white rounded-lg font-semibold hover:bg-primary-800 transition-all text-sm mt-2">
-                  {t('contactUsBtn')} <FaArrowRight />
+                  {t('contactUsBtn')} <FaArrowRight className="text-xs" />
                 </Link>
               </div>
 
-              <div className="bg-gray-200 dark:bg-gray-700 rounded-xl h-64 lg:h-auto flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600">
-                <div className="text-center text-gray-500 dark:text-gray-400">
-                  <FaMapMarkerAlt className="text-3xl mx-auto mb-2" />
-                  <p className="font-semibold text-sm">{t('mapPlaceholder')}</p>
-                  <p className="text-xs mt-1">(Add your Google Maps iframe here)</p>
-                </div>
+              {/* ✅ Right Side: Real Google Maps Iframe */}
+              <div className="w-full h-64 lg:h-full min-h-[300px] rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3604.5102427127604!2d68.36100717369102!3d25.387725623960385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x394c70edd7871491%3A0xd8ee9b8460b71a34!2sHigh%20Court%20Of%20Sindh%2C%20Hyderabad!5e0!3m2!1sen!2s!4v1792577754379!5m2!1sen!2s"
+                  className="w-full h-full"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  title="Office Location Map"
+                ></iframe>
               </div>
             </div>
           </div>

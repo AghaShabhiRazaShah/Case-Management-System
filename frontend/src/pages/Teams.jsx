@@ -55,7 +55,7 @@ const Teams = () => {
     { id: 13, name: 'Adil Hussain Jatoi', title: 'Advocate', cell: '0327-8316476', specialization: 'Legal Services', image: aadilImg, objectPos: 'center 25%', hasProfile: true },
     { id: 14, name: 'Abdul Rasheed Saand', title: 'Advocate', cell: '0346-0257121', specialization: 'Legal Services', image: rasheedImg, objectPos: 'center 20%', hasProfile: true },
     { id: 15, name: 'Duaa Tahir', title: 'Advocate', cell: '0303 3383767', specialization: 'Civil, Criminal, Family Law', image: duaImg, objectPos: 'center 25%', hasProfile: true },
-    { id: 16, name: 'Iqra Mustafa Bareejo', title: 'Advocate', cell: '+92 301 5529993', specialization: 'Civil, Criminal, and Family Litigation', image: iqraImg, objectPos: 'center 20%', hasProfile: true },
+    { id: 16, name: 'Iqra Mustafa', title: 'Advocate', cell: '+92 301 5529993', specialization: 'Civil, Criminal, and Family Litigation', image: iqraImg, objectPos: 'center 20%', hasProfile: true },
     { id: 17, name: 'Arslan Ahmed Soomro', title: 'Advocate / Legal Consultant', cell: '0333-7373754', specialization: 'Civil & Criminal Litigation, Corporate & Constitutional Law', image: arslanImg, objectPos: 'center 20%', hasProfile: true },
   ];
 

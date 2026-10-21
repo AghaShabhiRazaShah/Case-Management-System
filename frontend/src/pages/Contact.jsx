@@ -239,18 +239,22 @@ const Contact = () => {
                 </form>
               </div>
 
-              {/* Map & Office Location */}
+              {/* ✅ Map & Office Location - Real Google Maps Iframe */}
               <div>
                 <h2 className="font-serif text-3xl font-bold text-primary-800 dark:text-white mb-6">
                   {t('officeLocation')}
                 </h2>
                 
-                <div className="bg-gray-200 dark:bg-gray-700 rounded-2xl h-96 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 mb-6">
-                  <div className="text-center text-gray-500 dark:text-gray-400">
-                    <FaMapMarkerAlt className="text-5xl mx-auto mb-2" />
-                    <p className="font-semibold">{t('googleMapsIntegration')}</p>
-                    <p className="text-sm mt-1">{firmAddress}</p>
-                  </div>
+                <div className="w-full h-96 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 mb-6">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3604.5102427127604!2d68.36100717369102!3d25.387725623960385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x394c70edd7871491%3A0xd8ee9b8460b71a34!2sHigh%20Court%20Of%20Sindh%2C%20Hyderabad!5e0!3m2!1sen!2s!4v1792577754379!5m2!1sen!2s"
+                    className="w-full h-full"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    title="Office Location Map"
+                  ></iframe>
                 </div>
 
                 {/* Book Appointment Button */}

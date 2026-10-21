@@ -58,23 +58,29 @@ const About = () => {
           </p>
         </section>
 
-        {/* 1. About the Firm */}
-        <section className="py-20 bg-white dark:bg-gray-900">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
-            <div className="order-2 md:order-1">
-              <h2 className="font-serif text-3xl md:text-4xl font-bold text-primary-800 dark:text-white mb-6">Who We Are</h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed text-lg">
-                LMS is a professional law firm providing expert legal consultation and representation in various areas of law. Established with a vision to bridge the gap between complex legal systems and the people who need them, we have grown into a trusted name in the legal community.
-              </p>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                Our firm is committed to providing reliable, professional, and client-focused legal services. We handle a diverse range of legal matters, ensuring that every client receives personalized attention and strategic representation tailored to their unique needs.
-              </p>
-            </div>
-            <div className="order-1 md:order-2">
-              <img src="https://images.unsplash.com/photo-1521791055366-0d553872125f?auto=format&fit=crop&q=80&w=1000" alt="About Firm" className="rounded-2xl shadow-xl" />
-            </div>
-          </div>
-        </section>
+       {/* 1. About the Firm */}
+<section className="py-20 bg-white dark:bg-gray-900">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
+    <div className="order-2 md:order-1">
+      <h2 className="font-serif text-3xl md:text-4xl font-bold text-primary-800 dark:text-white mb-6">
+        About Our Firm
+      </h2>
+      <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed text-lg">
+        <strong className="text-primary-800 dark:text-white">M/S Meer Ahmed Mangrio & Associates</strong> is a premier law firm based in Hyderabad, Sindh, with a distinguished presence at the High Court of Sindh and the Supreme Court of Pakistan. Founded by <strong className="text-primary-800 dark:text-white">Advocate Meer Ahmed Mangrio</strong>, the firm has built a legacy of legal excellence, integrity, and an unwavering commitment to justice.
+      </p>
+      <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+        With decades of combined experience, our team of seasoned advocates specializes in <strong className="text-primary-700 dark:text-accent-400">Criminal Litigation, Constitutional Petitions, Civil Law, Family Law, Human Rights Advocacy, and Pro Bono Litigation</strong>. We pride ourselves on delivering strategic legal solutions tailored to each client's unique needs, while also actively contributing to legal education and professional development in the community.
+      </p>
+    </div>
+    <div className="order-1 md:order-2">
+      <img 
+        src="https://images.unsplash.com/photo-1521791055366-0d553872125f?auto=format&fit=crop&q=80&w=1000" 
+        alt="M/S Meer Ahmed Mangrio & Associates Office" 
+        className="rounded-2xl shadow-xl w-full object-cover" 
+      />
+    </div>
+  </div>
+</section>
 
         {/* 2 & 3. Mission & Vision */}
         <section className="py-20 bg-gray-50 dark:bg-gray-800">
