@@ -2,11 +2,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
+
+
 import PetitionCourt from './pages/PetitionCourt';
 import CriminalBailApplication from './pages/CriminalBailApplication';
 import CriminalAppeal from './pages/CriminalAppeal';
 import LawyerProfile from './pages/LawyerProfile';
-
 
 import Home from './pages/Home';
 import About from './pages/About';
@@ -24,6 +25,8 @@ import Careers from './pages/Careers';
 import Reminders from './pages/Reminders';
 import Teams from './pages/Teams';
 import Contact from './pages/Contact';
+import AllCases from './pages/AllCases'; // ✅ Naya Import Add Kiya
+import CaseOverview from './pages/CaseOverview';
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -48,25 +51,33 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              
               <Route path="/dashboard" element={<ProtectedRoute><LawyerDashboard /></ProtectedRoute>} />
               <Route path="/dashboard/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
-              {/* Case files, hearings, and diary */}
+              {/* ✅ Case File (Table View) */}
               <Route path="/dashboard/case-file" element={<ProtectedRoute><CaseFile /></ProtectedRoute>} />
               <Route path="/dashboard/cases" element={<ProtectedRoute><CaseFile /></ProtectedRoute>} />
               <Route path="/dashboard/today-hearings" element={<ProtectedRoute><CaseFile /></ProtectedRoute>} />
               <Route path="/dashboard/cause-list" element={<ProtectedRoute><CaseFile /></ProtectedRoute>} />
+              
+              {/* ✅ All Cases (Folder View - Alag Route) */}
+              <Route path="/dashboard/all-cases" element={<ProtectedRoute><AllCases /></ProtectedRoute>} />
+
               <Route path="/dashboard/case-diary" element={<ProtectedRoute><CaseDiary /></ProtectedRoute>} />
               <Route path="/dashboard/case-file/:id" element={<ProtectedRoute><CaseFileDetails /></ProtectedRoute>} />
               <Route path="/dashboard/library" element={<ProtectedRoute><Library /></ProtectedRoute>} />
               <Route path="/dashboard/Library" element={<ProtectedRoute><Library /></ProtectedRoute>} />
               <Route path="/dashboard/add-case" element={<ProtectedRoute><AddCase /></ProtectedRoute>} />
-              <Route path="/dashboard/petition-court/:id" element={<PetitionCourt />} />
-              <Route path="/dashboard/criminal-bail-application/:id" element={<CriminalBailApplication />} />
-              <Route path="/dashboard/criminal-appeal/:id" element={<CriminalAppeal />} />
+              
+              <Route path="/dashboard/petition-court/:id" element={<ProtectedRoute><PetitionCourt /></ProtectedRoute>} />
+              <Route path="/dashboard/criminal-bail-application/:id" element={<ProtectedRoute><CriminalBailApplication /></ProtectedRoute>} />
+              <Route path="/dashboard/criminal-appeal/:id" element={<ProtectedRoute><CriminalAppeal /></ProtectedRoute>} />
+              
               <Route path="/team/:id" element={<LawyerProfile />} />
-              <Route path="/dashboard/reminders" element={<Reminders />} />
+              <Route path="/dashboard/reminders" element={<ProtectedRoute><Reminders /></ProtectedRoute>} />
               <Route path="/dashboard/settings" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                 <Route path="/dashboard/case-overview/:id" element={<ProtectedRoute><CaseOverview /></ProtectedRoute>} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Router>

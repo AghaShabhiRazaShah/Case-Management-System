@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FaUpload, FaFilePdf, FaFileImage, FaTrash, FaPlus, FaFileAlt, FaEye, FaEdit } from 'react-icons/fa';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import CaseFooter from '../components/CaseFooter';
+
 
 const CriminalAppeal = () => {
   const { id } = useParams();
@@ -89,9 +91,10 @@ const CriminalAppeal = () => {
       url: URL.createObjectURL(newDocFile)
     };
 
-    const currentList = appealDynamicDocs[activeAppealCategory] || [];
+    const categoryKey = isCustomAppeal ? appealCategory : activeAppealCategory;
+    const currentList = appealDynamicDocs[categoryKey] || [];
     const updatedList = [...currentList, newDoc];
-    const updatedDocs = { ...appealDynamicDocs, [activeAppealCategory]: updatedList };
+    const updatedDocs = { ...appealDynamicDocs, [categoryKey]: updatedList };
 
     setAppealDynamicDocs(updatedDocs);
     saveFiles('appealDynamicDocs', updatedDocs);
@@ -103,9 +106,10 @@ const CriminalAppeal = () => {
   };
 
   const handleDeleteDynamicDoc = (docId) => {
-    const currentList = appealDynamicDocs[activeAppealCategory] || [];
+    const categoryKey = isCustomAppeal ? appealCategory : activeAppealCategory;
+    const currentList = appealDynamicDocs[categoryKey] || [];
     const updatedList = currentList.filter(doc => doc.id !== docId);
-    const updatedDocs = { ...appealDynamicDocs, [activeAppealCategory]: updatedList };
+    const updatedDocs = { ...appealDynamicDocs, [categoryKey]: updatedList };
 
     setAppealDynamicDocs(updatedDocs);
     saveFiles('appealDynamicDocs', updatedDocs);
@@ -139,7 +143,6 @@ const CriminalAppeal = () => {
               </div>
             </div>
 
-            {/* Appeal Document Upload Section */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6 border border-gray-200 dark:border-gray-700">
               <h3 className="text-lg font-bold text-gray-700 dark:text-gray-200 mb-4 flex items-center gap-2">
                 <FaPlus /> Select Category of Document
@@ -161,10 +164,10 @@ const CriminalAppeal = () => {
                 </select>
               )}
 
-              {activeAppealCategory && !isCustomAppeal && (
+              {(activeAppealCategory || isCustomAppeal) && (
                 <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                   <h4 className="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
-                    <FaUpload /> Upload Documents for: <span className="text-primary-600 ml-2">{activeAppealCategory}</span>
+                    <FaUpload /> Upload Documents for: <span className="text-primary-600 ml-2">{isCustomAppeal ? appealCategory : activeAppealCategory}</span>
                   </h4>
 
                   <div className="flex flex-col md:flex-row gap-4 mb-6 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
@@ -189,17 +192,16 @@ const CriminalAppeal = () => {
                         type="text"
                         value={searchDoc}
                         onChange={(e) => setSearchDoc(e.target.value)}
-                        placeholder="🔍 Search documents by name..."
+                        placeholder=" Search documents by name..."
                         className="w-full p-3 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
                       />
-                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                        
-                      </div>
+                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></div>
                     </div>
                   </div>
 
                   <div className="space-y-3">
-                    {appealDynamicDocs[activeAppealCategory]?.filter((doc) => 
+                    {/* ✅ FIXED: Added || [] to prevent undefined error */}
+                    {(appealDynamicDocs[isCustomAppeal ? appealCategory : activeAppealCategory] || []).filter((doc) => 
                       doc.name.toLowerCase().includes(searchDoc.toLowerCase()) ||
                       doc.fileName.toLowerCase().includes(searchDoc.toLowerCase())
                     ).length === 0 ? (
@@ -208,11 +210,11 @@ const CriminalAppeal = () => {
                         <p className="text-gray-500 dark:text-gray-400">
                           {searchDoc 
                             ? `No documents found matching "${searchDoc}"` 
-                            : `No documents added yet for ${activeAppealCategory}. Use the form above to add documents.`}
+                            : `No documents added yet for ${isCustomAppeal ? appealCategory : activeAppealCategory}. Use the form above to add documents.`}
                         </p>
                       </div>
                     ) : (
-                      appealDynamicDocs[activeAppealCategory]
+                      (appealDynamicDocs[isCustomAppeal ? appealCategory : activeAppealCategory] || [])
                         .filter((doc) => 
                           doc.name.toLowerCase().includes(searchDoc.toLowerCase()) ||
                           doc.fileName.toLowerCase().includes(searchDoc.toLowerCase())
@@ -255,27 +257,11 @@ const CriminalAppeal = () => {
                 </div>
               )}
             </div>
+   
 
-            {/* Bottom Buttons */}
-            <div className="flex justify-end gap-4 pb-8 mt-8 border-t pt-6 dark:border-gray-700">
-              <button 
-                onClick={() => navigate('/dashboard/add-case', { 
-                  state: { 
-                    formData: caseData, 
-                    caseId: caseData.id 
-                  } 
-                })} 
-                className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold flex items-center gap-2 transition-colors shadow-md"
-              >
-                <FaEdit /> Edit Case Details
-              </button>
-              <button 
-                onClick={() => navigate('/dashboard/case-file')} 
-                className="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400"
-              >
-                Back to Case File
-              </button>
-            </div>
+   <CaseFooter caseData={caseData} />
+
+
 
           </div>
         </div>

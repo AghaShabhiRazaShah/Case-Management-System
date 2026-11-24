@@ -53,8 +53,8 @@ const Contact = () => {
   };
 
   const firmAddress = 'Office No. 3 Behind DIALDAS Club, Near High Court of Sindh, Hyderabad';
-  const mainPhone = '0301-3504227';
-  const firmEmail = 'contact@meerahmedmangrio.com';
+  const mainPhone = '03352506772';
+  const firmEmail = 'mangriomeer@gmail.com';
   const officeHours = 'Mon - Sat: 9:00 AM - 6:00 PM';
 
   return (

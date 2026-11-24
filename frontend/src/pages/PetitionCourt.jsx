@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FaUpload, FaFilePdf, FaFileImage, FaTrash, FaPlus, FaFileAlt, FaEye, FaEdit } from 'react-icons/fa';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import CaseFooter from '../components/CaseFooter';
 
 const PetitionCourt = () => {
   const { id } = useParams();
@@ -260,26 +261,7 @@ const PetitionCourt = () => {
               )}
             </div>
 
-            {/* Bottom Buttons */}
-            <div className="flex justify-end gap-4 pb-8 mt-8 border-t pt-6 dark:border-gray-700">
-              <button 
-                onClick={() => navigate('/dashboard/add-case', { 
-                  state: { 
-                    formData: caseData, 
-                    caseId: caseData.id 
-                  } 
-                })} 
-                className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold flex items-center gap-2 transition-colors shadow-md"
-              >
-                <FaEdit /> Edit Case Details
-              </button>
-              <button 
-                onClick={() => navigate('/dashboard/case-file')} 
-                className="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400"
-              >
-                Back to Case File
-              </button>
-            </div>
+             <CaseFooter caseData={caseData} />
 
           </div>
         </div>

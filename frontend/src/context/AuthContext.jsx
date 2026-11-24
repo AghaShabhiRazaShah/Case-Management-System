@@ -3,10 +3,26 @@ import { createContext, useState, useContext } from 'react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Page load hone par check karein ke user pehle se login hai ya nahi
+  // ✅ UPDATED: Fail-Safe Hydration with Schema Validation
   const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem('currentUser');
-    return savedUser ? JSON.parse(savedUser) : null;
+    try {
+      const savedUser = localStorage.getItem('currentUser');
+      if (!savedUser) return null; // Agar kuch nahi hai, toh null return kare
+      
+      const parsed = JSON.parse(savedUser);
+      
+      // ✅ Schema Check: Object mein 'email' field honi zaroori hai, warna invalid samjho
+      if (parsed && typeof parsed === 'object' && parsed.email) {
+        return parsed;
+      }
+      
+      return null; // Agar object empty {} hai ya email nahi hai, toh null return kare
+    } catch (e) {
+      // ✅ Agar JSON corrupt ho gaya hai, toh error aane ke bajaye safely null return kare
+      console.warn("AuthContext: Corrupt user data in localStorage, resetting to null.");
+      localStorage.removeItem('currentUser'); // Corrupt data ko saaf bhi kar do
+      return null;
+    }
   });
 
   // 1. Sign Up Function
@@ -36,7 +52,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('currentUser', JSON.stringify(foundUser)); // Navbar ke liye save kiya
       return { success: true };
     }
-    return { success: false, message: 'Galat email ya password!' };
+   return { success: false, message: 'Invalid email or password!' };
   };
 
   // 3. Logout Function

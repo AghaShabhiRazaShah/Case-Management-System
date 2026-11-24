@@ -93,12 +93,16 @@ const Home = () => {
       
       <main className="flex-grow pt-16"> 
         
-        {/* 1. HERO SECTION - Compact */}
+        {/* 1. HERO SECTION */}
         <section className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-gray-900 text-white py-16 lg:py-24 overflow-hidden">
           <div className="absolute top-0 right-0 w-1/2 h-full bg-accent-500/10 rounded-l-full blur-3xl"></div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              {/* ✅ YAHAN CHANGE KIYA GAYA HAI: whitespace-pre-line add kiya gaya hai */}
+            
+            {/* Left Side Text */}
+            <div 
+              data-aos="fade-right"
+              /* KYUN LIKHA: Hero section ka text left se right ki taraf slide hokar aaye ga, jo user ki attention foran grab karta hai. */
+            >
               <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-2 whitespace-pre-line">
                 {t('heroTitle')}
               </h1>
@@ -119,19 +123,34 @@ const Home = () => {
               </div>
             </div>
             
-            <div className="hidden lg:block">
+            {/* Right Side Image */}
+            <div 
+              className="hidden lg:block"
+              data-aos="fade-left"
+              /* KYUN LIKHA: Hero image right se left ki taraf slide hokar aaye gi, text ke sath ek balanced "convergent" effect banane ke liye. */
+            >
               <img src={heroImage} alt="LMS Professional Office" className="rounded-xl shadow-2xl border-4 border-white/10 w-full object-cover" />
             </div>
           </div>
         </section>
 
-        {/* 2. ABOUT OUR FIRM - Compact */}
+        {/* 2. ABOUT OUR FIRM */}
         <section className="py-12 bg-gray-50 dark:bg-gray-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-8 items-center">
-            <div>
+            
+            {/* Left Side Image */}
+            <div 
+              data-aos="fade-right"
+              /* KYUN LIKHA: About section ki image left se right slide hogi taake layout Hero section ke opposite but balanced lage. */
+            >
               <img src="https://images.unsplash.com/photo-1521791055366-0d553872125f?auto=format&fit=crop&q=80&w=1000" alt="About Firm" className="rounded-xl shadow-xl w-full object-cover" />
             </div>
-            <div>
+            
+            {/* Right Side Text */}
+            <div 
+              data-aos="fade-left"
+              /* KYUN LIKHA: About section ka text right se left slide hoga, image ke sath mil kar ek professional visual flow banata hai. */
+            >
               <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary-800 dark:text-white mb-4">
                 {t('aboutOurFirm')}
               </h2>
@@ -146,22 +165,41 @@ const Home = () => {
                 </p>
                 
                 <p className="font-semibold text-primary-800 dark:text-white border-l-4 border-accent-500 pl-3 italic text-sm">
-                  Our mission is simple: to protect your rights, uphold the law, and deliver results that matter.
+                  Our mission is simple: to protect your rights, uphold the
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 3. OUR LEGAL SERVICES - Compact */}
+        {/* 3. OUR LEGAL SERVICES */}
         <section className="py-12 bg-white dark:bg-gray-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary-800 dark:text-white mb-3">{t('ourLegalServices')}</h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8 text-sm">{t('servicesDesc')}</p>
+            <h2 
+              className="font-serif text-2xl md:text-3xl font-bold text-primary-800 dark:text-white mb-3"
+              data-aos="fade-up"
+              /* KYUN LIKHA: Section heading hamesha neeche se upar (fade-up) aati hai taake clean entry ho. */
+            >
+              {t('ourLegalServices')}
+            </h2>
+            <p 
+              className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8 text-sm"
+              data-aos="fade-up"
+              data-aos-delay="100"
+              /* KYUN LIKHA: Sub-heading ko 100ms delay ke sath fade-up kiya taake heading ke baad smoothly aaye. */
+            >
+              {t('servicesDesc')}
+            </p>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {practiceAreas.map((area, idx) => (
-                <div key={idx} className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 group hover:-translate-y-1">
+                <div 
+                  key={idx} 
+                  className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 group hover:-translate-y-1"
+                  data-aos={idx % 3 === 0 ? 'fade-right' : idx % 3 === 1 ? 'fade-up' : 'fade-left'}
+                  data-aos-delay={idx * 100}
+                  /* KYUN LIKHA: Convergent effect! Col 1 (idx 0,3) left se aayega (fade-right), Col 2 (idx 1,4) neeche se (fade-up), Col 3 (idx 2,5) right se (fade-left). Har card 100ms delay ke sath cascade hoga. */
+                >
                   <div className="w-14 h-14 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary-600 transition-colors mx-auto">
                     <area.icon className="text-2xl text-primary-700 dark:text-accent-400 group-hover:text-white" />
                   </div>
@@ -173,13 +211,25 @@ const Home = () => {
           </div>
         </section>
 
-        {/* 5. WHY CHOOSE OUR FIRM - Compact */}
+        {/* 5. WHY CHOOSE OUR FIRM */}
         <section className="py-12 bg-primary-900 text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-serif text-2xl md:text-3xl font-bold text-center mb-8">{t('whyChooseOurFirm')}</h2>
+            <h2 
+              className="font-serif text-2xl md:text-3xl font-bold text-center mb-8"
+              data-aos="fade-up"
+              /* KYUN LIKHA: Heading ko standard fade-up diya. */
+            >
+              {t('whyChooseOurFirm')}
+            </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {whyChooseUs.map((item, idx) => (
-                <div key={idx} className="flex items-start gap-3 p-5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/10">
+                <div 
+                  key={idx} 
+                  className="flex items-start gap-3 p-5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/10"
+                  data-aos="fade-up"
+                  data-aos-delay={idx * 100}
+                  /* KYUN LIKHA: List items ko ek smooth cascading (staggered) fade-up effect diya taake padhne mein aasani ho aur premium lage. */
+                >
                   <div className="w-10 h-10 bg-accent-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
                     <item.icon className="text-accent-400 text-xl" />
                   </div>
@@ -193,10 +243,14 @@ const Home = () => {
           </div>
         </section>
 
-        {/* 6. APPOINTMENTS (CTA) - Compact */}
+        {/* 6. APPOINTMENTS (CTA) */}
         <section className="py-12 bg-white dark:bg-gray-900">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-gradient-to-r from-primary-800 to-primary-900 rounded-2xl p-6 md:p-10 text-center text-white shadow-2xl relative overflow-hidden">
+            <div 
+              className="bg-gradient-to-r from-primary-800 to-primary-900 rounded-2xl p-6 md:p-10 text-center text-white shadow-2xl relative overflow-hidden"
+              data-aos="fade-up"
+              /* KYUN LIKHA: Poore CTA box ko ek solid unit ki tarah neeche se upar fade-up kiya taake user ki attention grab ho. */
+            >
               <div className="absolute top-0 right-0 w-48 h-48 bg-accent-500/20 rounded-full blur-2xl -mr-12 -mt-12"></div>
               <h2 className="font-serif text-2xl md:text-3xl font-bold mb-3 relative z-10">{t('needLegalAssist')}</h2>
               <p className="text-gray-200 text-sm mb-6 max-w-xl mx-auto relative z-10">
@@ -209,13 +263,25 @@ const Home = () => {
           </div>
         </section>
 
-        {/* 7. TESTIMONIALS - Compact */}
+        {/* 7. TESTIMONIALS */}
         <section className="py-12 bg-gray-50 dark:bg-gray-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary-800 dark:text-white mb-8">{t('clientTestimonials')}</h2>
+            <h2 
+              className="font-serif text-2xl md:text-3xl font-bold text-primary-800 dark:text-white mb-8"
+              data-aos="fade-up"
+              /* KYUN LIKHA: Testimonials heading fade-up. */
+            >
+              {t('clientTestimonials')}
+            </h2>
             <div className="grid md:grid-cols-3 gap-6">
               {testimonials.map((t_item, idx) => (
-                <div key={idx} className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-left relative">
+                <div 
+                  key={idx} 
+                  className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-left relative"
+                  data-aos="fade-up"
+                  data-aos-delay={idx * 150}
+                  /* KYUN LIKHA: Testimonial cards ko thora zyada delay (150ms) diya taake wo ek ek karke smoothly appear hon, review padhne ka feel aaye. */
+                >
                   <FaQuoteLeft className="absolute top-3 right-3 text-3xl text-primary-100 dark:text-gray-800" />
                   <div className="flex text-accent-500 mb-3">
                     {[...Array(t_item.rating)].map((_, i) => <FaStar key={i} className="text-sm" />)}
@@ -233,16 +299,24 @@ const Home = () => {
           </div>
         </section>
 
-                {/* 8. CONTACT / OFFICE LOCATION - Compact */}
+        {/* 8. CONTACT / OFFICE LOCATION */}
         <section className="py-12 bg-white dark:bg-gray-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary-800 dark:text-white mb-8 text-center">
+            <h2 
+              className="font-serif text-2xl md:text-3xl font-bold text-primary-800 dark:text-white mb-8 text-center"
+              data-aos="fade-up"
+              /* KYUN LIKHA: Contact section heading fade-up. */
+            >
               {t('contactLocation')}
             </h2>
             
             <div className="grid lg:grid-cols-2 gap-8">
               {/* Left Side: Contact Info */}
-              <div className="space-y-4">
+              <div 
+                className="space-y-4"
+                data-aos="fade-right"
+                /* KYUN LIKHA: Left side ki saari contact details ek sath left se right slide hongi. */
+              >
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
                     <FaMapMarkerAlt className="text-primary-700 dark:text-accent-400 text-base" />
@@ -269,7 +343,7 @@ const Home = () => {
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-900 dark:text-white mb-1 text-sm">{t('email')}</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">contact@meerahmedmangrio.com</p>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">mangriomeer@gmail.com</p>
                   </div>
                 </div>
                 
@@ -288,8 +362,12 @@ const Home = () => {
                 </Link>
               </div>
 
-              {/* ✅ Right Side: Real Google Maps Iframe */}
-              <div className="w-full h-64 lg:h-full min-h-[300px] rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
+              {/* Right Side: Real Google Maps Iframe */}
+              <div 
+                className="w-full h-64 lg:h-full min-h-[300px] rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700"
+                data-aos="fade-left"
+                /* KYUN LIKHA: Right side ka Map right se left slide hoga, left side text ke sath perfect balance banane ke liye. */
+              >
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3604.5102427127604!2d68.36100717369102!3d25.387725623960385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x394c70edd7871491%3A0xd8ee9b8460b71a34!2sHigh%20Court%20Of%20Sindh%2C%20Hyderabad!5e0!3m2!1sen!2s!4v1792577754379!5m2!1sen!2s"
                   className="w-full h-full"

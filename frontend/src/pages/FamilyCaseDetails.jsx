@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { FaUpload, FaFilePdf, FaFileImage, FaTrash, FaPlus, FaFileAlt, FaEye, FaEdit } from 'react-icons/fa';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import CaseFooter from '../components/CaseFooter';
+
 
 const FamilyCaseDetails = ({ caseData }) => {
   const navigate = useNavigate();
@@ -77,9 +79,11 @@ const FamilyCaseDetails = ({ caseData }) => {
       url: URL.createObjectURL(newDocFile)
     };
 
-    const currentList = familyDynamicDocs[activeFamilyCategory] || [];
+    // ✅ Change 1: Dynamic Category Key for Adding
+    const categoryKey = isCustomFamily ? familyCategory : activeFamilyCategory;
+    const currentList = familyDynamicDocs[categoryKey] || [];
     const updatedList = [...currentList, newDoc];
-    const updatedDocs = { ...familyDynamicDocs, [activeFamilyCategory]: updatedList };
+    const updatedDocs = { ...familyDynamicDocs, [categoryKey]: updatedList };
 
     setFamilyDynamicDocs(updatedDocs);
     saveFiles('familyDynamicDocs', updatedDocs);
@@ -91,9 +95,12 @@ const FamilyCaseDetails = ({ caseData }) => {
   };
 
   const handleDeleteDynamicDoc = (docId) => {
-    const currentList = familyDynamicDocs[activeFamilyCategory] || [];
+    // ✅ Change 2: Dynamic Category Key for Deleting
+    const categoryKey = isCustomFamily ? familyCategory : activeFamilyCategory;
+    const currentList = familyDynamicDocs[categoryKey] || [];
     const updatedList = currentList.filter(doc => doc.id !== docId);
-    const updatedDocs = { ...familyDynamicDocs, [activeFamilyCategory]: updatedList };
+    const updatedDocs = { ...familyDynamicDocs, [categoryKey]: updatedList };
+    
     setFamilyDynamicDocs(updatedDocs);
     saveFiles('familyDynamicDocs', updatedDocs);
   };
@@ -144,10 +151,11 @@ const FamilyCaseDetails = ({ caseData }) => {
                 </select>
               )}
 
-              {activeFamilyCategory && !isCustomFamily && (
+              {/* ✅ Change 3: Condition Updated to show section for custom input too */}
+              {(activeFamilyCategory || isCustomFamily) && (
                 <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                   <h4 className="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
-                    <FaUpload /> Upload Documents for: <span className="text-primary-600 ml-2">{activeFamilyCategory}</span>
+                    <FaUpload /> Upload Documents for: <span className="text-primary-600 ml-2">{isCustomFamily ? familyCategory : activeFamilyCategory}</span>
                   </h4>
 
                   <div className="flex flex-col md:flex-row gap-4 mb-6 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
@@ -174,37 +182,46 @@ const FamilyCaseDetails = ({ caseData }) => {
                   </div>
 
                   <div className="space-y-3">
-                    {familyDynamicDocs[activeFamilyCategory]?.filter((doc) => doc.name.toLowerCase().includes(searchDoc.toLowerCase()) || doc.fileName.toLowerCase().includes(searchDoc.toLowerCase())).length === 0 ? (
+                    {/* ✅ Change 4: Dynamic Key with || [] fallback to prevent undefined error */}
+                    {(familyDynamicDocs[isCustomFamily ? familyCategory : activeFamilyCategory] || []).filter((doc) => 
+                      doc.name.toLowerCase().includes(searchDoc.toLowerCase()) || 
+                      doc.fileName.toLowerCase().includes(searchDoc.toLowerCase())
+                    ).length === 0 ? (
                       <div className="text-center py-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
                         <FaFileAlt className="text-4xl text-gray-400 mx-auto mb-2" />
-                        <p className="text-gray-500 dark:text-gray-400">{searchDoc ? `No documents found matching "${searchDoc}"` : `No documents added yet for ${activeFamilyCategory}. Use the form above to add documents.`}</p>
+                        <p className="text-gray-500 dark:text-gray-400">
+                          {searchDoc 
+                            ? `No documents found matching "${searchDoc}"` 
+                            : `No documents added yet for ${isCustomFamily ? familyCategory : activeFamilyCategory}. Use the form above to add documents.`}
+                        </p>
                       </div>
                     ) : (
-                      familyDynamicDocs[activeFamilyCategory].filter((doc) => doc.name.toLowerCase().includes(searchDoc.toLowerCase()) || doc.fileName.toLowerCase().includes(searchDoc.toLowerCase())).map((doc) => (
-                        <div key={doc.id} className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                          <div className="flex items-center gap-4 flex-1">
-                            <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">{getFileIcon(doc.fileType)}</div>
-                            <div className="flex-1 min-w-0">
-                              <p className="font-bold text-gray-800 dark:text-white text-lg truncate">{doc.name}</p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{doc.fileName} • {doc.fileSize} • {doc.date}</p>
+                      (familyDynamicDocs[isCustomFamily ? familyCategory : activeFamilyCategory] || [])
+                        .filter((doc) => 
+                          doc.name.toLowerCase().includes(searchDoc.toLowerCase()) || 
+                          doc.fileName.toLowerCase().includes(searchDoc.toLowerCase())
+                        )
+                        .map((doc) => (
+                          <div key={doc.id} className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex items-center gap-4 flex-1">
+                              <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">{getFileIcon(doc.fileType)}</div>
+                              <div className="flex-1 min-w-0">
+                                <p className="font-bold text-gray-800 dark:text-white text-lg truncate">{doc.name}</p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{doc.fileName} • {doc.fileSize} • {doc.date}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 ml-4">
+                              <button onClick={() => window.open(doc.url, '_blank')} className="flex items-center gap-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium" title="View Document"><FaEye /> View</button>
+                              <button onClick={() => handleDeleteDynamicDoc(doc.id)} className="p-2 text-red-500 hover:text-red-700 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" title="Delete Document"><FaTrash /></button>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2 ml-4">
-                            <button onClick={() => window.open(doc.url, '_blank')} className="flex items-center gap-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium" title="View Document"><FaEye /> View</button>
-                            <button onClick={() => handleDeleteDynamicDoc(doc.id)} className="p-2 text-red-500 hover:text-red-700 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" title="Delete Document"><FaTrash /></button>
-                          </div>
-                        </div>
-                      ))
+                        ))
                     )}
                   </div>
                 </div>
               )}
             </div>
-
-            <div className="flex justify-end gap-4 pb-8 mt-8 border-t pt-6 dark:border-gray-700">
-              <button onClick={() => navigate('/dashboard/add-case', { state: { formData: caseData, caseId: caseData.id } })} className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold flex items-center gap-2 transition-colors shadow-md"><FaEdit /> Edit Case Details</button>
-              <button onClick={() => navigate('/dashboard/case-file')} className="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400">Back to Case File</button>
-            </div>
+   <CaseFooter caseData={caseData} />
           </div>
         </div>
       </div>

@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaBalanceScale, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
+
+import hcourtBg from '../assets/hcourt.jpg';
+import logo from '../assets/logo.jpg';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -9,8 +12,6 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  
-  // ✅ Password Show/Hide State
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
@@ -25,7 +26,8 @@ const Login = () => {
     try {
       const result = login(formData.email, formData.password);
       if (result.success) {
-        navigate('/dashboard');
+        // ✅ CORRECTED: Login successful hone par seedha Dashboard par jayega
+        navigate('/dashboard'); 
       } else {
         setError(result.message || 'Invalid email or password');
       }
@@ -37,87 +39,242 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900 flex items-center justify-center px-4 py-12">
-      <div className="max-w-md w-full">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center justify-center space-x-2">
-            <FaBalanceScale className="text-4xl text-accent-500" />
-            <span className="font-serif text-3xl font-bold text-white">LMS</span>
-          </Link>
-          <h2 className="mt-4 text-2xl font-bold text-white">Welcome Back</h2>
-          <p className="mt-2 text-gray-300">Login to access your dashboard</p>
+    <div className="h-screen w-full relative overflow-hidden bg-gray-900">
+      {/* Background Image - Full Screen */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ 
+          backgroundImage: `url(${hcourtBg})`,
+          filter: 'blur(2px)',
+          transform: 'scale(1.05)'
+        }}
+      >
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+      </div>
+
+      {/* MOBILE LAYOUT: Vertical (Top: Branding, Bottom: Form) */}
+      <div className="lg:hidden relative z-10 h-full flex flex-col">
+        
+        {/* Top: Branding Section (40% height) */}
+        <div className="flex-none flex flex-col items-center justify-center px-6 pt-8 pb-4">
+          {/* Logo */}
+          <img 
+            src={logo} 
+            alt="Logo" 
+            className="w-16 h-16 rounded-full border-2 border-yellow-400 shadow-xl object-cover mb-3"
+          />
+          
+          {/* Name */}
+          <h1 className="text-2xl font-serif font-bold text-white text-center leading-tight">
+            M/s Meer Ahmed Mangrio <br />& Associates
+          </h1>
+          
+          {/* Title */}
+          <p className="text-sm text-yellow-400 font-semibold mt-2">
+            Advocate Supreme Court
+          </p>
+          
+          {/* Quote */}
+          <div className="mt-3 px-3 py-1.5 bg-white/10 backdrop-blur-sm border-l-2 border-yellow-400 rounded">
+            <p className="text-xs text-white italic text-center">
+              "Justice delayed is justice denied"
+            </p>
+          </div>
         </div>
 
-        {/* Form */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
-              <div className="relative">
-                <FaEnvelope className="absolute left-3 top-3 text-gray-400" />
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                  placeholder="you@example.com"
-                />
+        {/* Bottom: Form Section (60% height) */}
+        <div className="flex-grow flex items-center justify-center px-4 pb-6">
+          <div className="w-full max-w-sm">
+            <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl p-5 border border-white/40">
+              
+              {/* Header */}
+              <div className="mb-4 text-center">
+                <h2 className="text-xl font-bold text-gray-900">Welcome Back</h2>
+                <p className="text-gray-600 text-xs mt-1">Login to access your dashboard</p>
               </div>
-            </div>
 
-            {/* Password with Show/Hide Toggle */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
-              <div className="relative">
-                <FaLock className="absolute left-3 top-3 text-gray-400" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  className="w-full pl-10 pr-10 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                  placeholder="••••••••"
-                />
-                {/* ✅ Eye Icon Button */}
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="space-y-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Email Address</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <FaEnvelope className="text-gray-400 text-xs" />
+                    </div>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="block w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all text-sm"
+                      placeholder="you@example.com"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Password</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <FaLock className="text-gray-400 text-xs" />
+                    </div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                      className="block w-full pl-9 pr-10 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all text-sm"
+                      placeholder="••••••••"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    >
+                      {showPassword ? <FaEyeSlash className="text-gray-400 text-xs" /> : <FaEye className="text-gray-400 text-xs" />}
+                    </button>
+                  </div>
+                </div>
+
+                {error && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-2">
+                    <p className="text-red-600 text-xs text-center font-medium">{error}</p>
+                  </div>
+                )}
+
                 <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 focus:outline-none transition-colors"
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-2.5 px-4 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold rounded-lg shadow-lg transition-all disabled:opacity-50 text-sm"
                 >
-                  {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                  {loading ? 'Logging in...' : 'Login'}
                 </button>
+              </form>
+
+              {/* Signup Link */}
+              <div className="mt-3 text-center">
+                <p className="text-gray-600 text-xs">
+                  Don't have an account?{' '}
+                  <Link to="/signup" className="text-yellow-600 font-semibold hover:text-yellow-700">
+                    Sign up here
+                  </Link>
+                </p>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 bg-gradient-to-r from-primary-700 to-primary-900 text-white font-bold rounded-lg shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-2"
-            >
-              {loading ? 'Logging in...' : 'Login'}
-            </button>
-          </form>
+      {/* DESKTOP LAYOUT: Split (Left: Branding, Right: Form) */}
+      <div className="hidden lg:flex relative z-10 w-full h-full">
+        {/* Left Side - Branding */}
+        <div className="w-1/2 flex flex-col justify-center px-16 xl:px-24">
+          <div className="max-w-xl">
+            <div className="mb-6">
+              <img 
+                src={logo} 
+                alt="Logo" 
+                className="w-24 h-24 rounded-full border-4 border-yellow-400 shadow-2xl object-cover"
+              />
+            </div>
 
-          {error && (
-            <p className="mt-4 text-red-500 text-sm text-center font-medium">
-              {error}
+            <h1 className="text-5xl font-serif font-bold text-white mb-4 leading-tight">
+              M/s Meer Ahmed Mangrio <br />& Associates
+            </h1>
+
+            <p className="text-2xl text-yellow-400 mb-8 font-semibold">
+              Advocate Supreme Court
             </p>
-          )}
 
-          {/* Signup Link */}
-          <div className="mt-6 text-center">
-            <p className="text-gray-600 dark:text-gray-400">
-              Don't have an account?{' '}
-              <Link to="/signup" className="text-primary-600 dark:text-accent-400 font-semibold hover:underline">
-                Sign up here
-              </Link>
-            </p>
+            <div className="inline-flex items-center gap-3 px-5 py-3 bg-white/10 backdrop-blur-md border-l-4 border-yellow-400 rounded-lg">
+              <p className="text-lg text-white italic">
+                "Justice delayed is justice denied"
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side - Login Form */}
+        <div className="w-1/2 flex items-center justify-center px-12">
+          <div className="w-full max-w-md">
+            <div className="backdrop-blur-xl bg-white/95 rounded-2xl shadow-2xl p-6 border border-white/40">
+              
+              <div className="mb-5">
+                <h2 className="text-2xl font-bold text-gray-900 mb-1">Welcome Back</h2>
+                <p className="text-gray-600 text-sm">Login to access your dashboard</p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <FaEnvelope className="text-gray-400 text-sm" />
+                    </div>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all text-sm"
+                      placeholder="you@example.com"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <FaLock className="text-gray-400 text-sm" />
+                    </div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                      className="block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all text-sm"
+                      placeholder="••••••••"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    >
+                      {showPassword ? <FaEyeSlash className="text-gray-400 text-sm" /> : <FaEye className="text-gray-400 text-sm" />}
+                    </button>
+                  </div>
+                </div>
+
+                {error && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-2">
+                    <p className="text-red-600 text-xs text-center font-medium">{error}</p>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-2.5 px-4 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold rounded-lg shadow-lg transition-all disabled:opacity-50 text-sm"
+                >
+                  {loading ? 'Logging in...' : 'Login'}
+                </button>
+              </form>
+
+              <div className="mt-4 text-center">
+                <p className="text-gray-600 text-sm">
+                  Don't have an account?{' '}
+                  <Link to="/signup" className="text-yellow-600 font-semibold hover:text-yellow-700">
+                    Sign up here
+                  </Link>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

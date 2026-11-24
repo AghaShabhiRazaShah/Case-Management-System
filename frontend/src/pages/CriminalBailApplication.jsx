@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FaUpload, FaFilePdf, FaFileImage, FaTrash, FaPlus, FaFileAlt, FaEye, FaEdit } from 'react-icons/fa';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+   import CaseFooter from '../components/CaseFooter';
 
 const CriminalBailApplication = () => {
   const { id } = useParams();
@@ -89,9 +90,11 @@ const CriminalBailApplication = () => {
       url: URL.createObjectURL(newDocFile)
     };
 
-    const currentList = bailDynamicDocs[activeBailCategory] || [];
+    // ✅ Change 1: Dynamic Category Key for Adding
+    const categoryKey = isCustomBail ? bailCategory : activeBailCategory;
+    const currentList = bailDynamicDocs[categoryKey] || [];
     const updatedList = [...currentList, newDoc];
-    const updatedDocs = { ...bailDynamicDocs, [activeBailCategory]: updatedList };
+    const updatedDocs = { ...bailDynamicDocs, [categoryKey]: updatedList };
 
     setBailDynamicDocs(updatedDocs);
     saveFiles('bailDynamicDocs', updatedDocs);
@@ -103,9 +106,11 @@ const CriminalBailApplication = () => {
   };
 
   const handleDeleteDynamicDoc = (docId) => {
-    const currentList = bailDynamicDocs[activeBailCategory] || [];
+    // ✅ Change 2: Dynamic Category Key for Deleting
+    const categoryKey = isCustomBail ? bailCategory : activeBailCategory;
+    const currentList = bailDynamicDocs[categoryKey] || [];
     const updatedList = currentList.filter(doc => doc.id !== docId);
-    const updatedDocs = { ...bailDynamicDocs, [activeBailCategory]: updatedList };
+    const updatedDocs = { ...bailDynamicDocs, [categoryKey]: updatedList };
 
     setBailDynamicDocs(updatedDocs);
     saveFiles('bailDynamicDocs', updatedDocs);
@@ -139,7 +144,6 @@ const CriminalBailApplication = () => {
               </div>
             </div>
 
-            {/* Bail Document Upload Section */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6 border border-gray-200 dark:border-gray-700">
               <h3 className="text-lg font-bold text-gray-700 dark:text-gray-200 mb-4 flex items-center gap-2">
                 <FaPlus /> Select Category of Document
@@ -148,7 +152,7 @@ const CriminalBailApplication = () => {
               {isCustomBail ? (
                 <div className="flex gap-2">
                   <input type="text" value={bailCategory} onChange={(e) => { setBailCategory(e.target.value); saveFiles('customBailCategory', e.target.value); }} placeholder="Enter your custom document category..." className="w-full p-2 border-2 border-primary-500 rounded dark:bg-gray-700 dark:border-primary-400 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500" autoFocus />
-                  <button type="button" onClick={() => { setIsCustomBail(false); setBailCategory(''); saveFiles('bailCategory', ''); }} className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 text-sm font-medium"></button>
+                  <button type="button" onClick={() => { setIsCustomBail(false); setBailCategory(''); saveFiles('bailCategory', ''); }} className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 text-sm font-medium">✕</button>
                 </div>
               ) : (
                 <select value={bailCategory} onChange={handleBailCategoryChange} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -161,10 +165,11 @@ const CriminalBailApplication = () => {
                 </select>
               )}
 
-              {activeBailCategory && !isCustomBail && (
+              {/* ✅ Change 3: Condition Updated to show section for custom input too */}
+              {(activeBailCategory || isCustomBail) && (
                 <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                   <h4 className="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
-                    <FaUpload /> Upload Documents for: <span className="text-primary-600 ml-2">{activeBailCategory}</span>
+                    <FaUpload /> Upload Documents for: <span className="text-primary-600 ml-2">{isCustomBail ? bailCategory : activeBailCategory}</span>
                   </h4>
 
                   <div className="flex flex-col md:flex-row gap-4 mb-6 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
@@ -199,7 +204,8 @@ const CriminalBailApplication = () => {
                   </div>
 
                   <div className="space-y-3">
-                    {bailDynamicDocs[activeBailCategory]?.filter((doc) => 
+                    {/* ✅ Change 4: Dynamic Key with || [] fallback to prevent undefined error */}
+                    {(bailDynamicDocs[isCustomBail ? bailCategory : activeBailCategory] || []).filter((doc) => 
                       doc.name.toLowerCase().includes(searchDoc.toLowerCase()) ||
                       doc.fileName.toLowerCase().includes(searchDoc.toLowerCase())
                     ).length === 0 ? (
@@ -208,11 +214,11 @@ const CriminalBailApplication = () => {
                         <p className="text-gray-500 dark:text-gray-400">
                           {searchDoc 
                             ? `No documents found matching "${searchDoc}"` 
-                            : `No documents added yet for ${activeBailCategory}. Use the form above to add documents.`}
+                            : `No documents added yet for ${isCustomBail ? bailCategory : activeBailCategory}. Use the form above to add documents.`}
                         </p>
                       </div>
                     ) : (
-                      bailDynamicDocs[activeBailCategory]
+                      (bailDynamicDocs[isCustomBail ? bailCategory : activeBailCategory] || [])
                         .filter((doc) => 
                           doc.name.toLowerCase().includes(searchDoc.toLowerCase()) ||
                           doc.fileName.toLowerCase().includes(searchDoc.toLowerCase())
@@ -256,26 +262,10 @@ const CriminalBailApplication = () => {
               )}
             </div>
 
-            {/* Bottom Buttons */}
-            <div className="flex justify-end gap-4 pb-8 mt-8 border-t pt-6 dark:border-gray-700">
-              <button 
-                onClick={() => navigate('/dashboard/add-case', { 
-                  state: { 
-                    formData: caseData, 
-                    caseId: caseData.id 
-                  } 
-                })} 
-                className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold flex items-center gap-2 transition-colors shadow-md"
-              >
-                <FaEdit /> Edit Case Details
-              </button>
-              <button 
-                onClick={() => navigate('/dashboard/case-file')} 
-                className="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400"
-              >
-                Back to Case File
-              </button>
-            </div>
+            
+   <CaseFooter caseData={caseData} />
+
+
 
           </div>
         </div>

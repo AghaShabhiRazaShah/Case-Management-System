@@ -7,7 +7,7 @@ import Navbar from '../components/Navbar';
 import { 
   FaPlus, FaCalendarAlt, FaFileUpload, FaBell, FaGavel, 
   FaClock, FaCheckCircle, FaTasks, FaBriefcase, FaExclamationCircle,
-  FaUserTie, FaSearch, FaArrowRight
+  FaUserTie, FaSearch, FaArrowRight, FaFolderOpen
 } from 'react-icons/fa';
 
 const LawyerDashboard = () => {
@@ -17,13 +17,32 @@ const LawyerDashboard = () => {
   // Current Date State
   const [currentDate, setCurrentDate] = useState('');
 
+  // ✅ 1. Naya State: Dashboard Statistics ke liye
+  const [caseStats, setCaseStats] = useState({
+    total: 0,
+    submitted: 0,
+    pending: 0
+  });
+
   useEffect(() => {
+    // Date set karna
     const date = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     setCurrentDate(date.toLocaleDateString('en-US', options));
-  }, []);
 
-  // Mock Data for Today's Schedule
+    // ✅ 2. LocalStorage se real data fetch karna
+    const savedCases = JSON.parse(localStorage.getItem('firmCases') || '[]');
+    
+    const total = savedCases.length;
+    const submitted = savedCases.filter(c => c.status === 'Submitted').length;
+    const pending = total - submitted; // Jo submitted nahi hain, wo pending hain
+
+    // ✅ 3. State update karna taake UI refresh ho
+    setCaseStats({ total, submitted, pending });
+
+  }, []); // Empty array ka matlab hai yeh sirf page load hone par 1 baar chalega
+
+  // Mock Data for Today's Schedule (Baad mein isay bhi database se connect kar sakte hain)
   const todaySchedule = [
     { id: 1, time: '09:30 AM', title: 'Case #123/2026 - Bail Hearing', location: 'SHC Karachi', type: 'court' },
     { id: 2, time: '11:00 AM', title: 'Client Meeting: Ahmed Ali', location: 'Office Cabin', type: 'meeting' },
@@ -31,7 +50,6 @@ const LawyerDashboard = () => {
     { id: 4, time: '04:30 PM', title: 'Document Submission Deadline', location: 'High Court Registry', type: 'deadline' },
   ];
 
-  // Mock Data for Pending Tasks
   const pendingTasks = [
     { id: 1, task: 'File appeal in Case #123', due: 'Tomorrow', done: false },
     { id: 2, task: 'Submit documents for Case #456', due: '25 Sep', done: false },
@@ -39,7 +57,6 @@ const LawyerDashboard = () => {
     { id: 4, task: 'Prepare bail application for XYZ', due: '28 Sep', done: false },
   ];
 
-  // Mock Data for Notifications
   const notifications = [
     { id: 1, msg: 'Case #123 hearing is tomorrow at 9:30 AM', time: '1 hr ago', type: 'alert' },
     { id: 2, msg: 'Ahmed Ali uploaded a new document', time: '3 hrs ago', type: 'info' },
@@ -60,25 +77,27 @@ const LawyerDashboard = () => {
         {/* Main Content Area */}
         <div className="flex-1 lg:ml-64 p-4 sm:p-6 lg:p-8 overflow-y-auto h-[calc(100vh-4rem)]">
           
-          {/* 1. Welcome & Summary Section */}
+          {/* 1. Welcome & Summary Section (✅ UPDATED WITH DYNAMIC DATA) */}
           <div className="bg-gradient-to-r from-primary-800 to-primary-600 rounded-2xl p-6 md:p-8 text-white shadow-lg mb-8 relative overflow-hidden">
             <div className="relative z-10">
               <h1 className="text-2xl md:text-3xl font-bold mb-2">
-                Welcome Back 👋
+                Welcome Back 👋 {user?.name ? `, ${user.name}` : ''}
               </h1>
               <p className="text-primary-100 text-sm md:text-base mb-4">{currentDate}</p>
+              
+              {/* Dynamic Stats Cards */}
               <div className="flex flex-wrap gap-4 mt-6">
-                <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
-                  <p className="text-xs text-primary-100">Today's Hearings</p>
-                  <p className="text-xl font-bold">3</p>
+                <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg min-w-[120px]">
+                  <p className="text-xs text-primary-100 flex items-center gap-1"><FaBriefcase size={12}/> Total Cases</p>
+                  <p className="text-2xl font-bold">{caseStats.total}</p>
                 </div>
-                <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
-                  <p className="text-xs text-primary-100">Pending Tasks</p>
-                  <p className="text-xl font-bold">5</p>
+                <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg min-w-[120px]">
+                  <p className="text-xs text-primary-100 flex items-center gap-1"><FaFolderOpen size={12}/> Submitted</p>
+                  <p className="text-2xl font-bold">{caseStats.submitted}</p>
                 </div>
-                <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
-                  <p className="text-xs text-primary-100">Active Cases</p>
-                  <p className="text-xl font-bold">12</p>
+                <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg min-w-[120px]">
+                  <p className="text-xs text-primary-100 flex items-center gap-1"><FaClock size={12}/> Pending</p>
+                  <p className="text-2xl font-bold">{caseStats.pending}</p>
                 </div>
               </div>
             </div>
@@ -109,13 +128,13 @@ const LawyerDashboard = () => {
               </div>
             </Link>
 
-            <Link to="/dashboard/documents" className="flex items-center gap-3 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 dark:border-gray-700 group">
+            <Link to="/dashboard/all-cases" className="flex items-center gap-3 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 dark:border-gray-700 group">
               <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg group-hover:scale-110 transition-transform">
-                <FaFileUpload className="text-purple-600 dark:text-purple-400 text-xl" />
+                <FaFolderOpen className="text-purple-600 dark:text-purple-400 text-xl" />
               </div>
               <div>
-                <p className="font-bold text-gray-800 dark:text-white text-sm">Upload Doc</p>
-                <p className="text-xs text-gray-500">Add evidence</p>
+                <p className="font-bold text-gray-800 dark:text-white text-sm">All Cases</p>
+                <p className="text-xs text-gray-500">View folders</p>
               </div>
             </Link>
 
@@ -130,7 +149,7 @@ const LawyerDashboard = () => {
             </Link>
           </div>
 
-          {/* Main Grid Layout */}
+          {/* Main Grid Layout (Baaki code bilkul waisa hi hai jaisa aapka tha) */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             {/* LEFT COLUMN (Wider) */}
@@ -150,15 +169,12 @@ const LawyerDashboard = () => {
                 <div className="space-y-4">
                   {todaySchedule.map((event, index) => (
                     <div key={event.id} className="flex gap-4 relative">
-                      {/* Timeline Line */}
                       {index !== todaySchedule.length - 1 && (
                         <div className="absolute left-[19px] top-10 bottom-[-16px] w-0.5 bg-gray-200 dark:bg-gray-700"></div>
                       )}
-                      {/* Time */}
                       <div className="flex-shrink-0 w-16 text-sm font-bold text-gray-500 dark:text-gray-400 pt-1">
                         {event.time}
                       </div>
-                      {/* Dot */}
                       <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center z-10 ${
                         event.type === 'court' ? 'bg-blue-100 text-blue-600' :
                         event.type === 'meeting' ? 'bg-green-100 text-green-600' :
@@ -168,13 +184,12 @@ const LawyerDashboard = () => {
                          event.type === 'meeting' ? <FaUserTie size={14} /> : 
                          <FaExclamationCircle size={14} />}
                       </div>
-                      {/* Content */}
                       <div className="flex-grow bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg border border-gray-100 dark:border-gray-600">
                         <h4 className="font-semibold text-gray-900 dark:text-white text-sm">{event.title}</h4>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center gap-1">
                           📍 {event.location}
                         </p>
-                      </div>
+      </div>
                     </div>
                   ))}
                 </div>
@@ -186,7 +201,7 @@ const LawyerDashboard = () => {
                   <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
                     <FaBriefcase className="text-primary-600" /> Recent Cases
                   </h2>
-                  <Link to="/dashboard/cases" className="text-sm text-primary-600 dark:text-accent-400 hover:underline flex items-center gap-1">
+                  <Link to="/dashboard/all-cases" className="text-sm text-primary-600 dark:text-accent-400 hover:underline flex items-center gap-1">
                     View All <FaArrowRight size={10} />
                   </Link>
                 </div>
@@ -278,4 +293,4 @@ const LawyerDashboard = () => {
   );
 };
 
-export default LawyerDashboard;    
+export default LawyerDashboard;
