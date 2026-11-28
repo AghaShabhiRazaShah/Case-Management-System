@@ -19,17 +19,17 @@ const PracticeAreas = () => {
       desc: 'Protecting fundamental rights and constitutional remedies. We handle writ petitions, constitutional petitions, and matters involving interpretation of constitutional provisions.',
       color: 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400'
     },
+     {
+      icon: FaBalanceScale,
+      title: 'Civil Law',
+      desc: 'We provide professional legal assistance in civil disputes and litigation including contracts, torts, property disputes, injunctions, and civil suits of all nature.',
+      color: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
+    },
     {
       icon: FaUsers,
       title: 'Family Law',
       desc: 'Compassionate handling of sensitive family matters including divorce, custody, inheritance, maintenance, and family disputes with confidentiality and professionalism.',
       color: 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400'
-    },
-    {
-      icon: FaBalanceScale,
-      title: 'Civil Law',
-      desc: 'We provide professional legal assistance in civil disputes and litigation including contracts, torts, property disputes, injunctions, and civil suits of all nature.',
-      color: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
     },
     {
       icon: FaHome,

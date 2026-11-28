@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { 
   FaMoon, FaSun, FaTimes, FaSignOutAlt, 
-  FaBars
+  FaBars, FaTachometerAlt
 } from 'react-icons/fa';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 
-import logo from '../assets/logo.png';
+import logo from "../assets/logo.jpg";
 
 const Navbar = () => {
   const { darkMode, setDarkMode } = useTheme();
@@ -28,23 +28,28 @@ const Navbar = () => {
 
   return (
     <nav className="fixed w-full z-40 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-700">
-      <div className="max-w-full mx-auto px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           
           {/* LOGO + TEXT SECTION */}
-          <Link to="/" className="flex items-center gap-3 flex-shrink-0">
-            <img src={logo} alt="LMS Logo" className="h-12 w-12 border-2 border-primary-600 dark:border-accent-400 rounded-full shadow-md" />
-            <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-primary-800 dark:text-white">{t('heroTitle')}</h1>
-              <p className="text-xs text-gray-600 dark:text-gray-400 font-medium tracking-wide">Mangrio Meer Law </p>
+          <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+            <img src={logo} alt="LMS Logo" className="h-10 w-10 border-2 border-primary-600 dark:border-accent-400 rounded-full shadow-md" />
+            
+            <div className="block leading-tight">
+              <h1 className="text-xs md:text-sm lg:text-base font-bold text-primary-800 dark:text-white whitespace-nowrap">
+                M/s Meer Ahmed Mangrio & Associates
+              </h1>
+              <p className="text-[8px] md:text-[10px] lg:text-xs text-gray-600 dark:text-gray-400 font-medium tracking-wide whitespace-nowrap">
+                PREMIER LAW FIRM | HYDERABAD, SINDH
+              </p>
             </div>
           </Link>
 
           {/* Desktop Menu - CENTER */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center px-2">
             {navLinks.map((link) => (
               <NavLink key={link.path} to={link.path} className={({ isActive }) =>
-                `px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                `px-2.5 py-2 text-sm font-medium rounded-md whitespace-nowrap transition-all duration-200 ${
                   isActive ? 'text-primary-700 dark:text-accent-400 font-bold border-b-2 border-primary-700 dark:border-accent-400' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-accent-400 hover:bg-primary-50 dark:hover:bg-gray-800'
                 }`
               }>
@@ -54,25 +59,38 @@ const Navbar = () => {
           </div>
 
           {/* Right Side - Language + Dark Mode + Auth */}
-          <div className="hidden xl:flex items-center gap-3">
-            <select value={currentLang} onChange={(e) => changeLanguage(e.target.value)} className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm cursor-pointer focus:ring-2 focus:ring-primary-500">
-              <option value="en">🇬🇧 English</option>
-              <option value="ur">🇰 اردو</option>
-              <option value="ar">🇸🇦 العربية</option>
+          <div className="hidden xl:flex items-center gap-1.5 flex-shrink-0">
+            <select 
+              value={currentLang} 
+              onChange={(e) => changeLanguage(e.target.value)} 
+              className="px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-xs cursor-pointer focus:ring-2 focus:ring-primary-500 whitespace-nowrap"
+            >
+              <option value="en">🇬🇧 EN</option>
+              <option value="ur">🇵🇰 UR</option>
+              <option value="ar">🇸🇦 AR</option>
             </select>
 
-            <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-yellow-400 hover:scale-110 transition-transform">
-              {darkMode ? <FaSun size={18} /> : <FaMoon size={18} />}
+            <button onClick={() => setDarkMode(!darkMode)} className="p-1.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-yellow-400 hover:scale-110 transition-transform flex-shrink-0">
+              {darkMode ? <FaSun size={16} /> : <FaMoon size={16} />}
             </button>
 
-            {user ? (
-              <div className="flex items-center gap-3">
-                <button onClick={logout} className="flex items-center gap-2 px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md">
-                  <FaSignOutAlt /> Logout
+            {/* ✅ STRICT CHECK: Sirf tab Dashboard dikhayega jab user.email mojood ho */}
+            {user && user.email ? (
+              <div className="flex items-center gap-1.5">
+                <Link 
+                  to="/dashboard" 
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md text-xs whitespace-nowrap"
+                  title="Go to Dashboard"
+                >
+                  <FaTachometerAlt size={12} /> Dashboard
+                </Link>
+
+                <button onClick={logout} className="flex items-center gap-1.5 px-2.5 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md text-xs whitespace-nowrap">
+                  <FaSignOutAlt size={12} /> Logout
                 </button>
               </div>
             ) : (
-              <Link to="/login" className="px-5 py-2 bg-primary-700 hover:bg-primary-800 text-white rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md whitespace-nowrap text-sm">
+              <Link to="/login" className="px-3 py-1.5 bg-primary-700 hover:bg-primary-800 text-white rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md whitespace-nowrap text-xs">
                 Lawyer Login
               </Link>
             )}
@@ -81,10 +99,10 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <div className="xl:hidden flex items-center gap-2">
             <button onClick={() => setDarkMode(!darkMode)} className="p-2 text-gray-600 dark:text-yellow-400">
-              {darkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
+              {darkMode ? <FaSun size={18} /> : <FaMoon size={18} />}
             </button>
             <button onClick={() => setIsOpen(!isOpen)} className="text-gray-700 dark:text-gray-300 p-2">
-              {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+              {isOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
             </button>
           </div>
         </div>
@@ -100,7 +118,9 @@ const Navbar = () => {
               </Link>
             ))}
             <div className="border-t border-gray-200 dark:border-gray-700 my-2"></div>
-            {user ? (
+            
+            {/* ✅ STRICT CHECK: Mobile menu mein bhi same strict check */}
+            {user && user.email ? (
               <>
                 <Link to="/dashboard" className="block px-3 py-3 text-base font-bold text-primary-700 dark:text-accent-400 hover:bg-primary-50 dark:hover:bg-gray-700 rounded-md" onClick={() => setIsOpen(false)}>Go to Dashboard</Link>
                 <button onClick={() => { logout(); setIsOpen(false); }} className="w-full flex items-center gap-2 px-3 py-3 text-base font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-all">

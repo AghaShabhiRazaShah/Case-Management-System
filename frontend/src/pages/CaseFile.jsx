@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaCalendar, FaList, FaSearch, FaFilter, FaGavel, FaClock, FaFolderOpen, FaCheckCircle, FaTimes, FaPlus } from 'react-icons/fa';
+// ✅ 1. FaTrash icon add kiya gaya hai
+import { FaCalendar, FaList, FaSearch, FaFilter, FaGavel, FaClock, FaFolderOpen, FaCheckCircle, FaTimes, FaPlus, FaEye, FaTrash } from 'react-icons/fa';
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import { useLanguage } from '../context/LanguageContext';
@@ -17,36 +18,55 @@ const CaseFile = () => {
   const [yearFilter, setYearFilter] = useState('');
   const [stageFilter, setStageFilter] = useState('');
 
-  // Mock Data - Expanded for better filtering
-  const hearings = [
-    { id: 1, time: '09:30 AM', court: 'SHC Karachi', caseNo: 'C.P. No. 123/2026', caseType: 'C.P.', year: '2026', client: 'Ahmed Ali', stage: 'Arguments', date: '2026-09-01' },
-    { id: 2, time: '11:00 AM', court: 'District Court', caseNo: 'Suit No. 45/2025', caseType: 'Suit', year: '2025', client: 'Muhammad Aslam', stage: 'Evidence', date: '2026-09-01' },
-    { id: 3, time: '01:30 PM', court: 'Sessions Court', caseNo: 'State v. XYZ', caseType: 'Criminal', year: '2026', client: 'XYZ', stage: 'Bail', date: '2026-09-01' },
-    { id: 4, time: '03:00 PM', court: 'Family Court', caseNo: 'F.A. No. 12/2026', caseType: 'F.A.', year: '2026', client: 'Sara Khan', stage: 'Mediation', date: '2026-09-02' },
-    { id: 5, time: '10:00 AM', court: 'SHC Karachi', caseNo: 'C.P. No. 89/2025', caseType: 'C.P.', year: '2025', client: 'Bilal Ahmed', stage: 'Hearing', date: '2026-09-03' },
-    { id: 6, time: '02:00 PM', court: 'District Court', caseNo: 'Suit No. 78/2024', caseType: 'Suit', year: '2024', client: 'Fatima Khan', stage: 'Arguments', date: '2026-09-03' },
-  ];
+  // REAL DATA STATE
+  const [cases, setCases] = useState([]);
 
-  // Get unique values for dropdowns
-  const courts = [...new Set(hearings.map(h => h.court))].sort();
-  const caseTypes = [...new Set(hearings.map(h => h.caseType))].sort();
-  const years = [...new Set(hearings.map(h => h.year))].sort().reverse();
-  const stages = [...new Set(hearings.map(h => h.stage))].sort();
+  // USE EFFECT: Component load hote hi localStorage se real data fetch karega
+  useEffect(() => {
+    const savedCases = JSON.parse(localStorage.getItem('firmCases') || '[]');
+    setCases(savedCases);
+  }, []);
 
-  // Combined Filter Logic
-  const filteredHearings = hearings.filter(h => {
-    const matchesSearch = 
-      h.caseNo.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      h.client.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      h.court.toLowerCase().includes(searchTerm.toLowerCase());
+  // DYNAMIC FILTERS
+  const courts = [...new Set(cases.map(c => c.courtName).filter(Boolean))].sort();
+  const caseTypes = [...new Set(cases.map(c => c.caseCategory).filter(Boolean))].sort();
+  const years = [...new Set(cases.map(c => c.year).filter(Boolean))].sort().reverse();
+  const stages = [...new Set(cases.map(c => c.status || 'Pending').filter(Boolean))].sort();
+
+  // REAL FILTER LOGIC
+  const filteredCases = cases.filter(c => {
+    const stage = c.status || 'Pending';
+    const caseNoFull = `${c.caseNo}/${c.year}`;
     
-    const matchesCourt = courtFilter ? h.court === courtFilter : true;
-    const matchesCaseType = caseTypeFilter ? h.caseType === caseTypeFilter : true;
-    const matchesYear = yearFilter ? h.year === yearFilter : true;
-    const matchesStage = stageFilter ? h.stage === stageFilter : true;
+    const matchesSearch = 
+      (c.caseNo && c.caseNo.toLowerCase().includes(searchTerm.toLowerCase())) || 
+      (c.clientName && c.clientName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (c.courtName && c.courtName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      caseNoFull.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesCourt = courtFilter ? c.courtName === courtFilter : true;
+    const matchesCaseType = caseTypeFilter ? c.caseCategory === caseTypeFilter : true;
+    const matchesYear = yearFilter ? String(c.year) === yearFilter : true;
+    const matchesStage = stageFilter ? stage === stageFilter : true;
 
     return matchesSearch && matchesCourt && matchesCaseType && matchesYear && matchesStage;
   });
+
+  // ✅ 2. DELETE FUNCTION: Case aur uski files localStorage se hata deta hai
+  const handleDeleteCase = (caseId) => {
+    if (window.confirm("Are you sure you want to delete this case? This action cannot be undone.")) {
+      // 1. Cases list se ye case nikal do
+      const savedCases = JSON.parse(localStorage.getItem('firmCases') || '[]');
+      const updatedCases = savedCases.filter(c => c.id !== caseId);
+      localStorage.setItem('firmCases', JSON.stringify(updatedCases));
+      
+      // 2. Is case ki uploaded documents bhi saaf karo (memory cleanup)
+      localStorage.removeItem(`case_${caseId}_files`);
+      
+      // 3. Screen foran update ho jaye (page reload ke baghair)
+      setCases(updatedCases);
+    }
+  };
 
   // Clear all filters
   const clearFilters = () => {
@@ -67,11 +87,9 @@ const CaseFile = () => {
           {/* Header with New Case Button */}
           <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <Link to="/dashboard/add-case" className="flex items-center gap-2 px-6 py-3 bg-primary-700 hover:bg-primary-800 text-white font-bold rounded-lg shadow-lg transition-all">
-              <FaPlus /> {t('newCaseFile')}
+              <FaPlus /> {t('newCaseFile') || 'New Case File'}
             </Link>
           </div>
-
-          {/* ✅ Cards Delete Kar Diye Gaye - Yahan Kuch Nahi Hai */}
 
           {/* Search & Multiple Filters */}
           <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm mb-6">
@@ -81,97 +99,63 @@ const CaseFile = () => {
                 <FaSearch className="absolute left-3 top-3 text-gray-400" />
                 <input 
                   type="text" 
-                  placeholder={t('searchPlaceholder')}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500"
+                  placeholder={t('searchPlaceholder') || 'Search by Case No, Client, or Court...'}
+                  className="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
+                {searchTerm && (
+                  <button onClick={() => setSearchTerm('')} className="absolute right-3 top-3 text-gray-400 hover:text-red-500">
+                    <FaTimes />
+                  </button>
+                )}
               </div>
             </div>
 
-            {/* Filter Dropdowns - All in One Row */}
+            {/* Filter Dropdowns */}
             <div className="flex flex-wrap gap-3 items-end">
-              {/* Court Filter */}
               <div className="flex-1 min-w-[150px]">
-                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{t('court')}</label>
-                <select 
-                  value={courtFilter}
-                  onChange={(e) => setCourtFilter(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500"
-                >
-                  <option value="">{t('allCourts')}</option>
-                  {courts.map(court => (
-                    <option key={court} value={court}>{court}</option>
-                  ))}
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{t('court') || 'Court'}</label>
+                <select value={courtFilter} onChange={(e) => setCourtFilter(e.target.value)} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500">
+                  <option value="">{t('allCourts') || 'All Courts'}</option>
+                  {courts.map(court => <option key={court} value={court}>{court}</option>)}
                 </select>
               </div>
 
-              {/* Case Type Filter */}
               <div className="flex-1 min-w-[150px]">
-                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{t('caseType')}</label>
-                <select 
-                  value={caseTypeFilter}
-                  onChange={(e) => setCaseTypeFilter(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500"
-                >
-                  <option value="">{t('allTypes')}</option>
-                  {caseTypes.map(type => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{t('caseType') || 'Case Type'}</label>
+                <select value={caseTypeFilter} onChange={(e) => setCaseTypeFilter(e.target.value)} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500">
+                  <option value="">{t('allTypes') || 'All Types'}</option>
+                  {caseTypes.map(type => <option key={type} value={type}>{type}</option>)}
                 </select>
               </div>
 
-              {/* Year Filter */}
               <div className="flex-1 min-w-[120px]">
-                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{t('year')}</label>
-                <select 
-                  value={yearFilter}
-                  onChange={(e) => setYearFilter(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500"
-                >
-                  <option value="">{t('allYears')}</option>
-                  {years.map(year => (
-                    <option key={year} value={year}>{year}</option>
-                  ))}
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{t('year') || 'Year'}</label>
+                <select value={yearFilter} onChange={(e) => setYearFilter(e.target.value)} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500">
+                  <option value="">{t('allYears') || 'All Years'}</option>
+                  {years.map(year => <option key={year} value={year}>{year}</option>)}
                 </select>
               </div>
 
-              {/* Stage Filter */}
               <div className="flex-1 min-w-[150px]">
-                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{t('stage')}</label>
-                <select 
-                  value={stageFilter}
-                  onChange={(e) => setStageFilter(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500"
-                >
-                  <option value="">{t('allStages')}</option>
-                  {stages.map(stage => (
-                    <option key={stage} value={stage}>{stage}</option>
-                  ))}
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{t('stage') || 'Stage/Status'}</label>
+                <select value={stageFilter} onChange={(e) => setStageFilter(e.target.value)} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500">
+                  <option value="">{t('allStages') || 'All Stages'}</option>
+                  {stages.map(stage => <option key={stage} value={stage}>{stage}</option>)}
                 </select>
               </div>
 
-              {/* Clear Filters Button */}
-              <button 
-                onClick={clearFilters}
-                className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
-              >
-                <FaTimes /> {t('clear')}
+              <button onClick={clearFilters} className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors">
+                <FaTimes /> {t('clear') || 'Clear'}
               </button>
 
-              {/* View Toggle */}
               <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1 ml-auto">
-                <button 
-                  onClick={() => setViewMode('list')}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${viewMode === 'list' ? 'bg-white dark:bg-gray-600 shadow text-primary-700 dark:text-accent-400 font-semibold' : 'text-gray-500'}`}
-                >
-                  <FaList /> {t('list')}
+                <button onClick={() => setViewMode('list')} className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${viewMode === 'list' ? 'bg-white dark:bg-gray-600 shadow text-primary-700 dark:text-accent-400 font-semibold' : 'text-gray-500'}`}>
+                  <FaList /> {t('list') || 'List'}
                 </button>
-                <button 
-                  onClick={() => setViewMode('calendar')}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${viewMode === 'calendar' ? 'bg-white dark:bg-gray-600 shadow text-primary-700 dark:text-accent-400 font-semibold' : 'text-gray-500'}`}
-                >
-                  <FaCalendar /> {t('calendar')}
+                <button onClick={() => setViewMode('calendar')} className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${viewMode === 'calendar' ? 'bg-white dark:bg-gray-600 shadow text-primary-700 dark:text-accent-400 font-semibold' : 'text-gray-500'}`}>
+                  <FaCalendar /> {t('calendar') || 'Calendar'}
                 </button>
               </div>
             </div>
@@ -179,7 +163,7 @@ const CaseFile = () => {
             {/* Active Filters Display */}
             {(courtFilter || caseTypeFilter || yearFilter || stageFilter) && (
               <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                <span>{t('activeFilters')}:</span>
+                <span>{t('activeFilters') || 'Active Filters'}:</span>
                 {courtFilter && <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded">{t('court')}: {courtFilter}</span>}
                 {caseTypeFilter && <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 rounded">{t('type')}: {caseTypeFilter}</span>}
                 {yearFilter && <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 rounded">{t('year')}: {yearFilter}</span>}
@@ -195,57 +179,75 @@ const CaseFile = () => {
                 <table className="w-full text-left">
                   <thead className="bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm uppercase">
                     <tr>
-                      <th className="px-6 py-4">{t('dateAndTime')}</th>
-                      <th className="px-6 py-4">{t('court')}</th>
-                      <th className="px-6 py-4">{t('caseNumber')}</th>
-                      <th className="px-6 py-4">{t('client')}</th>
-                      <th className="px-6 py-4">{t('stage')}</th>
-                      <th className="px-6 py-4">{t('action')}</th>
+                      <th className="px-6 py-4">{t('caseNumber') || 'Case Number'}</th>
+                      <th className="px-6 py-4">{t('court') || 'Court'}</th>
+                      <th className="px-6 py-4">{t('client') || 'Client'}</th>
+                      <th className="px-6 py-4">{t('stage') || 'Stage/Status'}</th>
+                      <th className="px-6 py-4">{t('action') || 'Action'}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                    {filteredHearings.map((hearing) => (
-                      <tr key={hearing.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                        <td className="px-6 py-4">
-                          <div className="font-semibold text-gray-900 dark:text-white">{hearing.date}</div>
-                          <div className="text-sm text-gray-500 dark:text-gray-400">{hearing.time}</div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                            <FaGavel className="text-primary-600 dark:text-accent-400" />
-                            {hearing.court}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 font-medium text-primary-700 dark:text-accent-400">
-                          {hearing.caseNo}
-                        </td>
-                        <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
-                          {hearing.client}
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className="px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 rounded-full text-xs font-semibold">
-                            {hearing.stage}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <button className="text-sm text-primary-600 dark:text-accent-400 hover:underline font-medium">
-                            {t('viewDetails')}
+                    {filteredCases.length > 0 ? (
+                      filteredCases.map((c) => (
+                        <tr key={c.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                          <td className="px-6 py-4 font-medium text-primary-700 dark:text-accent-400">
+                            {c.caseNo}/{c.year}
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                              <FaGavel className="text-primary-600 dark:text-accent-400" />
+                              {c.courtName || 'N/A'}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-gray-700 dark:text-gray-300 font-semibold">
+                            {c.clientName || 'N/A'}
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                              c.status === 'Submitted' 
+                                ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' 
+                                : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
+                            }`}>
+                              {c.status || 'Pending'}
+                            </span>
+                          </td>
+                          
+                          {/* ✅ 3. ACTION COLUMN: View aur Delete dono buttons */}
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-4">
+                              <Link 
+                                to={`/dashboard/case-overview/${c.id}`} 
+                                className="inline-flex items-center gap-1 text-sm text-primary-600 dark:text-accent-400 hover:underline font-medium"
+                              >
+                                <FaEye className="text-xs" /> {t('viewDetails') || 'View File'}
+                              </Link>
+                              
+                              <button 
+                                onClick={() => handleDeleteCase(c.id)}
+                                className="inline-flex items-center gap-1 text-sm text-red-600 hover:text-red-800 hover:underline font-medium transition-colors"
+                                title="Delete Case"
+                              >
+                                <FaTrash className="text-xs" /> Delete
+                              </button>
+                            </div>
+                          </td>
+
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="5" className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+                          <FaFolderOpen className="text-4xl mx-auto mb-3 opacity-50" />
+                          <p className="text-lg font-medium">{t('noHearingsFound') || 'No cases found matching your filters.'}</p>
+                          <button onClick={clearFilters} className="mt-2 text-primary-600 dark:text-accent-400 hover:underline font-semibold">
+                            {t('clearAllFilters') || 'Clear all filters'}
                           </button>
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>
-              {filteredHearings.length === 0 && (
-                <div className="p-8 text-center text-gray-500 dark:text-gray-400">
-                  <FaSearch className="text-4xl mx-auto mb-2 opacity-50" />
-                  <p>{t('noHearingsFound')}</p>
-                  <button onClick={clearFilters} className="mt-2 text-primary-600 dark:text-accent-400 hover:underline">
-                    {t('clearAllFilters')}
-                  </button>
-                </div>
-              )}
             </div>
           )}
 
@@ -253,8 +255,8 @@ const CaseFile = () => {
           {viewMode === 'calendar' && (
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-12 text-center">
               <FaCalendar className="text-6xl text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300">{t('calendarView')}</h3>
-              <p className="text-gray-500 dark:text-gray-400 mt-2">{t('comingSoon')}</p>
+              <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300">{t('calendarView') || 'Calendar View'}</h3>
+              <p className="text-gray-500 dark:text-gray-400 mt-2">{t('comingSoon') || 'Coming Soon'}</p>
             </div>
           )}
         </div>

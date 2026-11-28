@@ -24,7 +24,7 @@ const Sidebar = () => {
   const menuItems = [
     { name: 'Dashboard', path: '/dashboard', icon: FaTachometerAlt },
     { name: 'My Profile', path: '/dashboard/profile', icon: FaUser },
-    { name: 'All Cases', path: '/dashboard/cases', icon: FaBriefcase },
+    { name: 'All Cases', path: '/dashboard/all-cases', icon: FaBriefcase },
     { name: 'Case File', path: '/dashboard/case-file', icon: FaCalendarAlt },
     { name: 'Case Diary', path: '/dashboard/case-diary', icon: FaCalendarAlt },
     { name: 'Library', path: '/dashboard/library', icon: FaBook },
